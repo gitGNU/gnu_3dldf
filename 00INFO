@@ -22,9 +22,11 @@ See any operating system documentation about shared libraries for
 more information, such as the ld(1) and ld.so(8) manual pages.
 ----------------------------------------------------------------------
 
-configure CXX=/home/lfinsto/gcc-4.8.2/bin/g++ LDFLAGS="-L/home/lfinsto/gcc-4.8.2/lib64/../lib64" \
-   --prefix=`pwd` 
-
+export LD_LIBRARY_PATH="/home/lfinsto/gcc-4.8.2/lib64/../lib64:$LD_LIBRARY_PATH"
+export PATH="/home/lfinsto/ttemp/automake-1.14/bin/:$PATH"
+~/ttemp/automake-1.14/bin/aclocal && autoconf && autoheader && ~/ttemp/automake-1.14/bin/automake 
+configure --disable-shared CXX=/home/lfinsto/gcc-4.8.2/bin/g++ \
+   LDFLAGS="-L/home/lfinsto/gcc-4.8.2/lib64/../lib64" --prefix=`pwd` LIBS="-lgsl -lgslcblas -lm"
 
 LC_ALL=C TZ=UTCO diff -rc2P 3DLDF-2.0 3DLDF-2.0.1 | gzip -9 > 3DLDF-2.0-2.0.1.patch.gz
 
