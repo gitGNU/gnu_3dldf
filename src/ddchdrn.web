@@ -768,9 +768,7 @@ Dodecahedron::get_tabs(const real pentagon_diameter,
 {
 @q ****** (6) Preliminaries.@>   
 
-#if DEBUG_COMPILE
-   bool DEBUG = false; /* |true| */ @; 
-#endif /* |DEBUG_COMPILE|  */@; 
+   volatile bool DEBUG = false; /* |true| */ @; 
 
    stringstream cerr_strm;
 
@@ -785,7 +783,20 @@ Dodecahedron::get_tabs(const real pentagon_diameter,
                                                     &error_stop_value,
                                                     &warning_stop_value);
 
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+       cerr_mutex.lock();
+       cerr << "Entering `Dodecahedron::get_tabs'."
+            << endl;
+       cerr_mutex.unlock(); 
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+
    using namespace Scan_Parse;
+
 
    Path tab;
    Path stitch_line;
@@ -848,6 +859,13 @@ Dodecahedron::get_tabs(const real pentagon_diameter,
 @q ****** (6) First tab on |rpv[1]|.@>
 @ First tab on |rpv[1]|.
 
+\LOG
+\initials{LDF 2013.11.10.}
+@:BUG FIX@> BUG FIX:  Now casting final argument of |Path::set| to |Point *|.
+For some reason, this worked when |real| was a ``|typedef|'' for |double|, 
+but caused a run-time error when it was changed to |float|.
+\ENDLOG
+
 @<Define |Dodecahedron| functions@>=
 
    corner[0] = p[0].mediate(p[1], .125); 
@@ -873,7 +891,7 @@ Dodecahedron::get_tabs(const real pentagon_diameter,
    mid_pt[3] = corner[3].mediate(corner[0]);
 
    tab.set("--", true, &corner[0], &mid_pt[0], &corner[1], &mid_pt[1],
-         &corner[2], &mid_pt[2], &corner[3], &mid_pt[3], 0);
+         &corner[2], &mid_pt[2], &corner[3], &mid_pt[3], static_cast<Point*>(0));
 
    tab_vector.push_back(tab);
 
@@ -904,6 +922,9 @@ Dodecahedron::get_tabs(const real pentagon_diameter,
       stitch_line_vector.push_back(stitch_line);
 
 }  /* |if (do_stitch_lines)|  */
+
+
+
 
 @q ****** (6) Tabs and stitch lines 2 through 4 on |rpv[1]|.@>
 @
