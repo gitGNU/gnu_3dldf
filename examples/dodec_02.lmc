@@ -133,8 +133,6 @@ if false:
       rotated (0, 0, -36);
 fi; 
 
-message "Error after here 0."; 
-
 %% **** (4) Get tabs
 
 if do_stitch_lines:

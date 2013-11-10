@@ -500,9 +500,7 @@ Complex::operator=(const Complex& c)
 
 @q ****** (6) Preliminaries.@>   
 
-#if DEBUG_COMPILE
-   bool DEBUG = true; /* |false| */ @; 
-#endif /* |DEBUG_COMPILE|  */@; 
+   volatile bool DEBUG = false; /* |true| */ @; 
 
    stringstream cerr_strm;
 

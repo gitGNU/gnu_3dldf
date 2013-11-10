@@ -1137,7 +1137,18 @@ Path::set(string connector, bool cycle ... )
 {
 @q ***** (5) @>
 
-    volatile bool DEBUG = false;  /* |true|  */
+    volatile bool DEBUG = true;  /* |false|  */
+
+#if DEBUG_COMPILE
+    if (DEBUG)
+    {
+        cerr_mutex.lock();
+        cerr << "Entering `Path::set'."
+             << endl;
+        cerr_mutex.unlock(); 
+
+    }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
 
     line_switch = false;
     cycle_switch = cycle;
@@ -1188,10 +1199,14 @@ Path::set(string connector, bool cycle ... )
 
     Point* arg_ptr;
 
+cerr << "Error after here 10." << endl; 
+
     while ((arg_ptr = va_arg(ap, Point*)) != static_cast<Point*>(0))
     {
         points.push_back(create_new<Point>(arg_ptr)); 
     }
+
+cerr << "Error after here 11." << endl; 
     
     va_end(ap);
 
@@ -1234,7 +1249,6 @@ Now resizing |pre_projective_extremes|.
 @*2 Constructor.
 @^\cfunc{Path}{Path}@>
 
-
 \LOG
 \initials{LDF 2004.06.07.}  
 Now setting |dash_pattern = 0| rather than
@@ -1271,7 +1285,7 @@ Path::Path(Point* first_point_ptr ... )
 {
   bool DEBUG = false; /* |true|  */ 
   if (DEBUG)
-    cerr << "Entering Path() (Point* ...).\n" << flush;
+    cerr << "Entering Path() (Point* ...).\n";
 
   shape_type = PATH_TYPE;
   surface_hiding_ctr = 0;

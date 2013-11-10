@@ -96,11 +96,7 @@ beginfig(1);
 %%          arguments!
 %%          LDF 2007.10.16.
 
-message "Error after here 0."; 
-
 draw_dodecahedron_net {4, true, 6, .375mm, .75mm, identity};
-
-message "Error after here 1."; 
 
 endfig with_projection parallel_x_z no_sort; 
 

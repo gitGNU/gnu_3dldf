@@ -2419,9 +2419,7 @@ Conic_Section_Lattice::get_ellipse(Scanner_Node scanner_node)
  
 @q ****** (6) Preliminaries.@>   
 
-#if DEBUG_COMPILE
-   bool DEBUG = true; /* |false| */ @; 
-#endif /* |DEBUG_COMPILE|  */@; 
+   volatile bool DEBUG = false; /* |true| */ @; 
 
    stringstream cerr_strm;
 

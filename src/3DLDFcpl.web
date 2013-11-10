@@ -367,7 +367,7 @@ int
 main(int argc, char *argv[])
 {@/
 
-  bool DEBUG = true;
+  volatile bool DEBUG = true;
 
   unsigned short comparison_value;       
 

@@ -932,7 +932,7 @@ Path::is_circular(Scanner_Node scanner_node) const
 
 @q ***** (5) Preliminaries.@> 
 
-  bool DEBUG = true; /* |false|  */
+  volatile bool DEBUG = false; /* |true|  */
 
   using namespace Scan_Parse;
 
