@@ -797,7 +797,6 @@ Dodecahedron::get_tabs(const real pentagon_diameter,
 
    using namespace Scan_Parse;
 
-
    Path tab;
    Path stitch_line;
 
@@ -922,9 +921,6 @@ but caused a run-time error when it was changed to |float|.
       stitch_line_vector.push_back(stitch_line);
 
 }  /* |if (do_stitch_lines)|  */
-
-
-
 
 @q ****** (6) Tabs and stitch lines 2 through 4 on |rpv[1]|.@>
 @
