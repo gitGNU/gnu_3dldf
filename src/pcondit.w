@@ -367,16 +367,17 @@ Added code for printing the current location to standard error
 
   @<Common declarations for rules@>@; 
   
-  if (scanner_node->in->type == Io_Struct::FILE_TYPE)
-    {
-      location_strm << scanner_node->in->filename << ": "
-                    << @=@@1@>@=.first_line@> << ":" << @=@@1@>@=.first_column@>
-                    << "--"
-                    << @=@@1@>@=.last_line@> << ":" << @=@@1@>@=.last_column@>;
-    }
-
+#if 0 
+@q  if (scanner_node->in->type == Io_Struct::FILE_TYPE)                                    @>
+@q    {                                                                                    @>
+@q      location_strm << scanner_node->in->filename << ": "                                @>
+@q                    << @@=@@1@@>@@=.first_line@@> << ":" << @@=@@1@@>@@=.first_column@@> @>
+@q                    << "--"                                                              @>
+@q                    << @@=@@1@@>@@=.last_line@@> << ":" << @@=@@1@@>@@=.last_column@@>;  @>
+@q    } @>
   else
     location_strm.str("");
+#endif 
 
 @q ****** (6).@> 
 

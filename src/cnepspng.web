@@ -1609,11 +1609,6 @@ Commented-out the code that converts the EPS files to PNG.
                  @<Convert PS file@>@;
              }
 
-
-
-          printf("Error after here 0.\n");
-
-
           if (pnm_output)
              {
                  strcpy(output_extension, "pnm");

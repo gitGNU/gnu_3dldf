@@ -5741,7 +5741,9 @@ Scan_Parse::conditional(Scanner_Node scanner_node,
 #endif /* |DEBUG_COMPILE|  */@; 
  
       YYSTYPE value; 
+#if 0 
       YYLTYPE location; 
+#endif 
 
       int curr_catcode;
 
@@ -5755,7 +5757,11 @@ Scan_Parse::conditional(Scanner_Node scanner_node,
       for(;;)
         {
 
+#if 0 
           curr_catcode = yylex(&value, &location, scanner_node); 
+#else
+          curr_catcode = yylex(&value, scanner_node); 
+#endif 
 
 #if DEBUG_COMPILE
           if (DEBUG)
@@ -5953,7 +5959,12 @@ Scan_Parse::conditional(Scanner_Node scanner_node,
                 }
 #endif /* |DEBUG_COMPILE|  */@; 
 
+#if 0 
               curr_catcode = yylex(&value, &location, scanner_node);
+#else
+              curr_catcode = yylex(&value, scanner_node); 
+#endif 
+
 
 @q ******** (8) Error handling:  |curr_catcode != COLON|.@> 
 
@@ -8720,7 +8731,9 @@ Rethrow |bad_alloc|.
   int curr_token = NULL_VALUE;
 
   YYSTYPE value;
+#if 0
   YYLTYPE location;
+#endif 
 
   scanner_node->group_ctr++;
 
@@ -8889,7 +8902,11 @@ Added |int prev_token|.
       
       prev_token = curr_token;
 
+#if 0 
       curr_token = yylex(&value, &location, scanner_node);
+#else
+      curr_token = yylex(&value, scanner_node); 
+#endif 
       
 
 #if DEBUG_COMPILE
@@ -9315,7 +9332,9 @@ Rethrow |bad_alloc|.
 @q **** (4) @>   
 
    YYSTYPE value; 
+#if 0 
    YYLTYPE location; 
+#endif 
 
    int curr_catcode = NULL_VALUE;
 
@@ -9331,18 +9350,21 @@ Rethrow |bad_alloc|.
    
 @q ***** (5).@> 
 
+#if 0 
          curr_catcode = yylex(&value, &location, scanner_node); 
+#else
+         curr_catcode = yylex(&value, scanner_node); 
+#endif 
 
 #if DEBUG_COMPILE
-   if (DEBUG)
-     {
-         cerr << "After `yylex()':  "
-              << "`scanner_node->token_string' == "                
-              << scanner_node->token_string << endl;
-     }
-#endif /* |DEBUG_COMPILE|  */@; 
- 
- 
+         if (DEBUG)
+           {
+               cerr << "After `yylex()':  "
+                    << "`scanner_node->token_string' == "                
+                    << scanner_node->token_string << endl;
+           }
+#endif /* |DEBUG_COMPILE|  */
+  
          if (curr_catcode == COLON)
             {
 
@@ -9436,7 +9458,11 @@ Changed |Loop_Info_Type::vector<string> suffix_vector| to
 
 @q ***** (5).@> 
 
+#if 0 
          curr_catcode = yylex(&value, &location, scanner_node); 
+#else
+         curr_catcode = yylex(&value, scanner_node); 
+#endif 
 
          if (curr_catcode == END_FOR && nest_ctr == 0)
             {
@@ -10573,7 +10599,9 @@ arguments with the same name that might be passed to the macro.
    parameter_ctr = 0;
 
    YYSTYPE value; 
+#if 0 
    YYLTYPE location; 
+#endif 
 
    int prev_token;
    int curr_token = NULL_VALUE;
@@ -10596,7 +10624,12 @@ arguments with the same name that might be passed to the macro.
       
          prev_token = curr_token;
 
+#if 0 
          curr_token = yylex(&value, &location, scanner_node);
+#else
+         curr_token = yylex(&value, scanner_node); 
+#endif 
+
       
 #if DEBUG_COMPILE
          if (DEBUG)
@@ -11549,7 +11582,9 @@ in the |else| case of the conditional testing |curr_token|.
           curr_placeholder_strm << "¥" << ctr << "¥";
 
           YYSTYPE value; 
+#if 0 
           YYLTYPE location; 
+#endif 
 
           int prev_token;
           int curr_token = NULL_VALUE;
@@ -11561,8 +11596,14 @@ in the |else| case of the conditional testing |curr_token|.
           if (left_brace_predicate)
              curr_token = LEFT_BRACE;
           else
-             curr_token = yylex(&value, &location, scanner_node);
+          {
 
+#if 0 
+             curr_token = yylex(&value, &location, scanner_node);
+#else
+             curr_token = yylex(&value, scanner_node); 
+#endif 
+          }  /* |else|  */
    
           if (curr_token == LEFT_BRACE)
              {
@@ -11596,7 +11637,12 @@ in the |else| case of the conditional testing |curr_token|.
          
                  prev_token = curr_token;
 
+#if 0 
                  curr_token = yylex(&value, &location, scanner_node);
+#else
+                 curr_token = yylex(&value, scanner_node); 
+#endif 
+
 
                  if (curr_token == RIGHT_BRACE && brace_nest_ctr == 0)
                        {
@@ -13819,7 +13865,9 @@ Scan_Parse::let_func(Scanner_Node scanner_node,
 @<Define |Scan_Parse| functions@>=
 
    YYSTYPE value; 
+#if 0 
    YYLTYPE location; 
+#endif 
 
    int curr_catcode;
 
@@ -13828,7 +13876,11 @@ Scan_Parse::let_func(Scanner_Node scanner_node,
    for(;;)
       {
 
+#if 0 
           curr_catcode = yylex(&value, &location, scanner_node); 
+#else
+          curr_catcode = yylex(&value, scanner_node); 
+#endif 
          
           if (curr_catcode == SEMI_COLON)
              break;

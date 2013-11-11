@@ -165,8 +165,6 @@ Now including \filename{pens.web}.
 repeat it here.
 \initials{LDF 2004.04.08.} 
 
-\functexi{int yylex(YYSTYPE* value, YYLTYPE* location, void* parameter)}
-
 \LOG
 \initials{LDF 2004.04.08.}  
 Moved |yylex| from \filename{parser.w}
@@ -217,7 +215,6 @@ Get thread info for error and debugging output.
 
 int
 yylex(YYSTYPE* value,
-      YYLTYPE* location,
       void* parameter)
 {
 
@@ -525,7 +522,6 @@ Added this section.
 
 
            curr_catcode = sub_yylex(value,
-                                    location,
                                     scanner_node);
 
 @q ***** (5).@>
@@ -547,7 +543,6 @@ Added this section.
                cerr_mutex.unlock(); 
                prev_catcode = curr_catcode;
                curr_catcode = sub_yylex(value,
-                                        location,
                                         scanner_node);
 
 @q ****** (6).@> 
@@ -563,7 +558,6 @@ Added this section.
                
                    prev_catcode = curr_catcode;
                    curr_catcode = sub_yylex(value,
-                                            location,
                                             scanner_node);
                    
 
@@ -592,7 +586,6 @@ Not reading from standard input.
     {
       prev_catcode = curr_catcode;
       curr_catcode = sub_yylex(value,
-                               location,
                                scanner_node);
 
 
@@ -1084,7 +1077,6 @@ Formatting changes.
 @<Declare scanning functions@>=
 int
 sub_yylex(YYSTYPE *value,
-          YYLTYPE *location,
           Scanner_Node scanner_node);
 
 @q ** (2) Definition.  @>
@@ -1094,7 +1086,6 @@ sub_yylex(YYSTYPE *value,
 
 int
 sub_yylex(YYSTYPE *value,
-          YYLTYPE *location,
           Scanner_Node scanner_node)
 {
 
@@ -1239,12 +1230,19 @@ Added this section.
 
  loop_start:
 
+#if 0 
   curr_position = location->position;
   start_line = location->last_line;
   curr_line = start_line;
   start_column = location->last_column;
   curr_column = start_column; 
-
+#else
+  curr_position = 0;
+  start_line = 0;
+  curr_line = start_line;
+  start_column = 0;
+  curr_column = start_column; 
+#endif 
 
   for (bool first_time = true;;)
     {
@@ -1419,11 +1417,13 @@ Added this section.
            else
                ++curr_column;
          
+#if 0 
           location->first_line   = start_line;
           location->first_column = start_column;
           location->last_line    = curr_line;
           location->last_column  = curr_column;
           location->position     = curr_position;
+#endif 
 
 
           strcpy(value->string_value, "INVALID");
@@ -2014,11 +2014,13 @@ Commented this out.  It caused an error.
             }
 #endif /* |DEBUG_COMPILE|  */@; 
  
+#if 0 
          location->first_line    = start_line;
          location->first_column = start_column;
          location->last_line     = curr_line;
          location->last_column  = curr_column;
          location->position     = curr_position;
+#endif 
                   
          goto loop_start;
 
@@ -2221,11 +2223,13 @@ redirection.
                           cerr_message(cerr_strm);
                           cerr_strm.str();
 
+#if 0 
                           location->first_line    = start_line;
           		  location->first_column = start_column;
           		  location->last_line     = curr_line;
           		  location->last_column  = curr_column;
           		  location->position     = curr_position;
+#endif 
 
                           scanner_node->set_token_string(curr_token_string);
 			  return TERMINATE;  
@@ -2255,11 +2259,13 @@ redirection.
                              }
 #endif /* |DEBUG_COMPILE|  */@; 
                 
+#if 0 
                           location->first_line    = start_line;
                           location->first_column = start_column;
                           location->last_line     = curr_line;
                           location->last_column  = curr_column;
                           location->position     = curr_position;
+#endif 
 
                           if (scanner_node->get_in_type() == Io_Struct::STDIN_TYPE)
                              return SEMI_COLON;
@@ -2523,11 +2529,13 @@ we just skip over the whitespace.
                           }
 #endif /* |DEBUG_COMPILE|  */@; 
               
+#if 0 
                        location->first_line   = start_line;
                        location->first_column = start_column;
                        location->last_line    = curr_line;
                        location->last_column  = curr_column;
                        location->position     = curr_position;
+#endif 
  
                        goto loop_start;
  
@@ -2896,11 +2904,13 @@ This seems to work, but I'll have to keep an eye on it.
 
 @<Define scanning functions@>=
 
+#if 0 
               location->first_line   = start_line;
               location->first_column = start_column;
               location->last_line    = curr_line;
               location->last_column  = curr_column;
               location->position     = curr_position;
+#endif 
 
 #if DEBUG_COMPILE
    if (DEBUG)

@@ -1199,15 +1199,11 @@ Path::set(string connector, bool cycle ... )
 
     Point* arg_ptr;
 
-cerr << "Error after here 10." << endl; 
-
     while ((arg_ptr = va_arg(ap, Point*)) != static_cast<Point*>(0))
     {
         points.push_back(create_new<Point>(arg_ptr)); 
     }
 
-cerr << "Error after here 11." << endl; 
-    
     va_end(ap);
 
 @q ***** (5) @>

@@ -202,11 +202,12 @@ definitions, but only when the macros are expanded.
 
 @<Preprocessor macros not only for the parser@>=
 
+#if 0 
 #define YYPARSE_PARAM parameter
 #define YYLEX_PARAM parameter
 #define YYLTYPE LDF_LOCATION_TYPE
 #define YYLOC_DEFAULT(Current, Rhs, N) /* Do nothing.  */
-
+#endif 
 
 @q #if DEBUG_COMPILE @>
 @q #define DEBUG_COMPILE_SAVE 1 @>
@@ -222,8 +223,9 @@ definitions, but only when the macros are expanded.
 @* Preprocessor macros for the parser only.
 @<Preprocessor macros for the parser only@>=
 
+#if 0 
 #define YYERROR_VERBOSE
-
+#endif 
 
 
 @q * (1) Bison declarations.  @>
@@ -255,9 +257,11 @@ Added this section.
 @=%defines@>@/
 @=%debug@>@/
 @q =%expect 1@>@/
-@=%locations@>@/
+@q =%locations@>@/
 @q =%glr-parser@>@/
 @=%pure_parser@>@/
+@=%parse-param {yyscan_t parameter}@>@;@/
+@=%lex-param {yyscan_t parameter}@>@;@/
 @=/* %token_table */@>@/ 
 @=%verbose@>
 

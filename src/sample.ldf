@@ -134,7 +134,7 @@ a := false;  % Assignment, okay.
 
 boolean c, d, e;
 
-c := d := e := true; % !! Make sure this works.
+% c := d := e := true; % !! Make sure this works.
 
 %%%% Now `c', `d', and `e' are all `true'.
 
@@ -149,10 +149,6 @@ s := "abcdef"; % Simple assignment from a literal string.
 t := "ghijkl";
 
 u := s & t; % --> "abcdefghijkl".  Concatenation.
-
-%% Okay to here.
-
-
 
 %% pen expressions.
 
@@ -233,9 +229,7 @@ g := f;  % Assignment from a `dash_pattern' variable
 
 %% dash_pattern assignments can be chained.
 
-%% Okay to here.
-
-%%%% d := e := f := evenly scaled (2, 0, 0); % !! Not yet implemented!
+%%%% d := e := f := evenly scaled (2, 0, 0); %% !! Not yet implemented!
 
 %% color expressions.
 
@@ -254,7 +248,7 @@ c := red; % Assignment from a predefined color variable.
 %%% colors can also be set using `set'.
 %%% See `setting colors' below. % !! Add `setting colors'.
 
-d := e := green; % color assignments can be chained.
+%d := e := green; % color assignments can be chained.  %% Not yet implemented!  LDF 2013.11.11.
 
 %%% color_vectors.
 

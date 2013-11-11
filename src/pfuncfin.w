@@ -74,20 +74,22 @@ Added this function.
 @<Declare functions@>=
 int
 yylex(YYSTYPE* value,
-      YYLTYPE* location,
-      void* parameter);  
+      yyscan_t parameter);  
 
+#if 0 
+      YYLTYPE* location,
+#endif 
 
 @q ** yyerror() @>
 @ {\it yyerror\/}().
 @<Declare functions@>=
 int
-yyerror(char const* message);@/
+yyerror(void *v, char const* message);@/
 
 @
 @<Define functions@>=
 int
-yyerror(char const* message)
+yyerror(void *v, char const* message)
 {
   cerr << "ERROR! In yyparse(): " << message << endl << flush;
   return 0;
@@ -182,7 +184,8 @@ definitions, but only when the macros are expanded.
 @=%{@>
 @<Include files@>@;
 @<Using declarations@>@;
-@<Declare location type@>@;
+typedef void* yyscan_t;
+@q Declare location type @>
 @<Preprocessor macros not only for the parser@>@;
 @<Preprocessor macros for the parser only@>@;
 @<Declare |name_map| and |type_name_map|@>@;
@@ -201,7 +204,7 @@ definitions, but only when the macros are expanded.
 @<Define rules@>@;
 @=%%@> /* Introduces ``Additional C++ code'' section.  
           \initials{LDF 2004.04.07}.  */
-@<Define |LDF_LOCATION_TYPE| functions@>@;
+@q <Define |LDF_LOCATION_TYPE| functions@>
 @<Define functions@>@;
 
 @<Reset |DEBUG_COMPILE|@>@;
@@ -229,7 +232,8 @@ set for parser input files.
 @(parser_1.h++@>=
 
 #undef YYLTYPE
-@<Declare location type@>@;
+typedef void* yyscan_t;
+@q <Declare location type @>
 @<Preprocessor macros not only for the parser@>@;
 @<|extern| declarations in |namespace Scan_Parse|@>@;
 @<|extern| declaration of |name_map| and |type_name_map|@>@;

@@ -8279,7 +8279,6 @@ Label::~Label(void)
    objects.  I don't think there really is a problem, but glibc produces a warning, 
    and I don't know how to turn it off.
   \initials{LDF 2006.11.09.}  */
-cerr << "Error after here 6" << endl; 
 #endif 
 
    delete pt;

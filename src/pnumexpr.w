@@ -225,17 +225,21 @@ Print out context.
 
   if (@=$3@> == 0)
     {
-      unsigned int first_line   = @=@@1@>.first_line;
-      unsigned int first_column = @=@@1@>.first_column;
-      unsigned int last_line    = @=@@3@>.last_line;
-      unsigned int last_column  = @=@@3@>.last_column;
+#if 0 
+@q       unsigned int first_line   = @@=@@1@@>.first_line;   @>
+@q       unsigned int first_column = @@=@@1@@>.first_column; @>
+@q       unsigned int last_line    = @@=@@3@@>.last_line;    @>
+@q       unsigned int last_column  = @@=@@3@@>.last_column;  @>
+#endif 
 
       cerr_strm << "ERROR! ";
 
+#if 0 
       if (scanner_node->in->type == Io_Struct::FILE_TYPE)
         cerr_strm << "In input file `" << scanner_node->in->filename << "' "
                   << first_line << "." << first_column << "--" << last_line
                   << "." << last_column << "." << endl;
+#endif 
 
       cerr_strm << "Division by 0.  Setting <numeric token atom> to 0."
                 << "Will try to continue.";
@@ -3072,19 +3076,22 @@ Added this rule.
       if (@=$3@> == 0)
         {
 
-          unsigned int first_line   = @=@@1.first_line;@>@;
-          unsigned int first_column = @=@@1.first_column;@>@;
-          unsigned int last_line    = @=@@3.last_line;@>@;
-          unsigned int last_column  = @=@@3.last_column;@>@;
+#if 0 
+@q           unsigned int first_line   = @@=@@1.first_line;@@>@@;   @>
+@q           unsigned int first_column = @@=@@1.first_column;@@>@@; @>
+@q           unsigned int last_line    = @@=@@3.last_line;@@>@@;    @>
+@q           unsigned int last_column  = @@=@@3.last_column;@@>@@;  @>
+#endif 
 
           cerr_strm << "ERROR! ";
 
 
-
+#if 0 
           if (scanner_node->in->type == Io_Struct::FILE_TYPE)
             cerr_strm << "In input file `" << scanner_node->in->filename << "' "
                       << first_line << "." << first_column << "--" << last_line
                       << "." << last_column << ".\n";
+#endif 
 
           cerr_strm << "Division by 0.  Setting <numeric secondary> to 0.\n"
                     << "Will try to continue.\n" << flush;
