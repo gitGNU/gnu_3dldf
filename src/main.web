@@ -204,10 +204,12 @@ Added declaration of |zzparse|.
 
 @<Declare scanning and parsing functions@>=
 int
-yyparse (void*);
+yyparse(yyscan_t);
 
+#if 0 
 int
-zzparse (void*);
+zzparse (yyscan_t);
+#endif 
 
 @q ** yywrap. @>
 @ {\it yywrap}.

@@ -91,7 +91,7 @@ Added |friend| declaration for |yyparse|.
 class Complex
 {
 
-   friend int yyparse(void*);
+   friend int yyparse(yyscan_t);
 
 
    protected:

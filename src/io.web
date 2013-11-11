@@ -1011,7 +1011,7 @@ Id_Map_Entry_Type
 
   friend class Id_Map_Type;
   friend class Scanner_Type;
-  friend int yyparse(void*);
+  friend int yyparse(yyscan_t);
 
   @<|friend| declarations for functions in |namespace Scan_Parse|@>@;
 
@@ -1713,7 +1713,7 @@ Id_Map_Type
 {
   friend class Scanner_Type;
   friend class Id_Map_Entry_Type;
-  friend int yyparse(void*);
+  friend int yyparse(yyscan_t);
 
 
   Scanner_Node scanner_node;
@@ -2559,7 +2559,7 @@ Added |friend| declaration for |class Rhombic_Triacontahedron|.
   friend class Dodecahedron;
   friend class Rhombic_Triacontahedron;
 
-  friend int yyparse(void*);
+  friend int yyparse(yyscan_t);
   friend int main(int, char**);
 
   friend int Id_Map_Entry_Type::destroy_array_subentries(Scanner_Node);
@@ -6183,7 +6183,7 @@ Now writing declaration of |yyparse| to \filename{io.h}.
 @(io.h@>=
 #ifndef LDF_IO_H_KNOWN
 #define LDF_IO_H_KNOWN
-int yyparse(void*);
+int yyparse(yyscan_t);
 @<Declare I/O |structs|@>@;
 @<Declare I/O functions@>@;
 @<|Id_Map_Entry_Node| declaration@>@;
