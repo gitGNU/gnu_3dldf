@@ -5201,6 +5201,7 @@ dummy_func(void)
 #ifndef LDF_PSPGLB_H_KNOWN
 #define LDF_PSPGLB_H_KNOWN
 @<Type definitions@>@;
+typedef void* yyscan_t;
 @<Forward declarations@>@;
 @<Utility classes@>@;
 @<Declare |namespace Scan_Parse|@>@;
