@@ -581,18 +581,18 @@ and subsequently resizing it, if necessary.
   world_extremes = p.world_extremes;
 
   if (world_extremes.size() == 0)
-     world_extremes.resize(6,0);
+     world_extremes.resize(6, 0);
 
   pre_projective_extremes = p.pre_projective_extremes; 
 
 
   if (pre_projective_extremes.size() == 0)  
-    pre_projective_extremes.resize(6,0);
+    pre_projective_extremes.resize(6, 0);
 
   projective_extremes = p.projective_extremes; 
 
   if (projective_extremes.size() == 0)  
-    projective_extremes.resize(6,0);
+    projective_extremes.resize(6, 0);
   
   
 

@@ -403,7 +403,7 @@ Rhombic_Triacontahedron::get_rhombus(real rhombus_side_length,
     p[2] = p[0];
     p[2].rotate(p[1], p[3]);
 
-    rhombus->set("--", true, &p[0], &p[1], &p[2], &p[3], 0);
+    rhombus->set("--", true, &p[0], &p[1], &p[2], &p[3], static_cast<Point*>(0));
 
     return rhombus; 
 
@@ -591,7 +591,7 @@ Rhombic_Triacontahedron::get_net(real rhombus_side_length,
    p[2] = p[0];
    p[2].rotate(p[1], p[3]);
 
-   rhombus[0].set("--", true, &p[0], &p[1], &p[2], &p[3], 0);
+   rhombus[0].set("--", true, &p[0], &p[1], &p[2], &p[3], static_cast<Point*>(0));
 
    *pv += create_new<Polygon>(rhombus[0]);
 
@@ -849,7 +849,7 @@ Rhombic_Triacontahedron::get_tabs(real rhombus_side_length,
    p[9] = p[2];
    p[9].rotate(p[8], p[5], -angle);
 
-   tab.set("--", true, &p[4], &p[7], &p[9], &p[5], 0);
+   tab.set("--", true, &p[4], &p[7], &p[9], &p[5], static_cast<Point*>(0));
 
    *tv += create_new<Path>(tab);
 

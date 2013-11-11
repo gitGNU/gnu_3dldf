@@ -631,8 +631,13 @@ two lines is |front_corner|.
 
   Point back_corner = Point::intersection_point(right_corner, vpl, left_corner, vpr).pt;
   back_corner.dotlabel(picture, "$r_2$"); 
-  Path pa("--", true, &front_corner, &right_corner, &back_corner, &left_corner, 0);
-
+  Path pa("--", 
+          true, 
+          &front_corner, 
+          &right_corner, 
+          &back_corner, 
+          &left_corner, 
+          static_cast<Point*>(0));
 
   Point center = Point::intersection_point(front_corner, back_corner,
                                            left_corner, right_corner).pt;

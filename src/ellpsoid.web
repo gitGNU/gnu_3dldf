@@ -2679,7 +2679,13 @@ Ellipsoid::intersection(const Plane& q, Scanner_Node scanner_node) const
        ellipse_center = ellipse_center_save;
        normal = normal_save;
 
-       isect_path[4].set("--", true, &isect_pt[0], &isect_pt[3], &isect_pt[2],&isect_pt[1], 0);  
+       isect_path[4].set("--", 
+                         true, 
+                         &isect_pt[0], 
+                         &isect_pt[3], 
+                         &isect_pt[2],
+                         &isect_pt[1], 
+                         static_cast<Point*>(0));  
  
 #if TESTING 
        isect_path[4].show("isect_path[4]:");

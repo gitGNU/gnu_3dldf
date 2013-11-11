@@ -1371,7 +1371,7 @@ Tetrahedron::draw_net(Picture& picture,
 
   Path p[6];
 
-  p[0].set("--", true, &pts[6], &pts[10], &pts[11], &pts[7], 0);
+  p[0].set("--", true, &pts[6], &pts[10], &pts[11], &pts[7], static_cast<Point*>(0));
 
   p[0].draw(picture);
   
@@ -3184,7 +3184,7 @@ Icosahedron::draw_net(Picture& picture,
   pts[10].dotlabel(9); 
 #endif 
 
-  p[0].set("--", true, &pts[3], &pts[9], &pts[10], &pts[4], 0);
+  p[0].set("--", true, &pts[3], &pts[9], &pts[10], &pts[4], static_cast<Point*>(0));
 
   p[1] = p[2] = p[3] = p[4] = p[5] = p[0];
 
