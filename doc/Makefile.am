@@ -97,10 +97,11 @@ info: 3dldf.info
 3dldf.html: $(SOURCES_MANUAL)
 	makeinfo --html --no-split 3dldf.texi
 
-.PHONY: html-split
+#### .PHONY: html-split
 
 html-split: $(SOURCES_MANUAL)
 	makeinfo --html 3dldf.texi
+	touch html-split
 
 #### ** (2) Tags
 

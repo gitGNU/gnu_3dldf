@@ -46,7 +46,10 @@
 
 
 
-all: 3DLDF.dvi 3DLDF.ps 3DLDF.pdf 3DLDF.info 3DLDF.html html-split
+# html-split
+# 3DLDF.dvi 3DLDF.ps 3DLDF.pdf 3DLDF.info 3DLDF.html 
+
+all: 
 
 3dldf_TEXINFOS = 3DLDF.texi intro.texi contrib.texi using.texi gspoint.texi gstranpt.texi  \
                  gstransf.texi gsdlpt.texi gspaths.texi gsplane.texi gssolfig.texi \
@@ -106,35 +109,36 @@ pdf: 3DLDF.pdf
 3DLDF.pdf: 3DLDF.ps
 	ps2pdf 3DLDF.ps
 
-EXTRA_DIST = 3DLDF.ps 3DLDF.pdf 3DLDF.dvi \
-              ChangeLog.dev $(3dldf_TEXINFOS) \
+EXTRA_DIST = 3DLDF.ps 3DLDF.pdf 3DLDF.dvi 3DLDF.info 3DLDF.html \
+              ChangeLog.dev $(3dldf_TEXINFOS) 3DLDF/ \
               $(3dldf_EPS) $(3dldf_PNG) 
 
 .PHONY : dummy
 dummy:
 	echo "distdir = $(distdir)"
 
-.PHONY : ps
-ps: 3DLDF.ps 
+# .PHONY : ps
+# ps: 3DLDF.ps 
 
-3DLDF.ps : 3DLDF.dvi
-	@echo Running \"dvips -o 3DLDF.ps 3DLDF.dvi\"
-	dvips -o 3DLDF.ps 3DLDF.dvi
+# 3DLDF.ps : 3DLDF.dvi
+# 	@echo Running \"dvips -o 3DLDF.ps 3DLDF.dvi\"
+# 	dvips -o 3DLDF.ps 3DLDF.dvi
 
 
-3DLDF.dvi: $(3dldf_TEXINFOS)
-	texi2dvi 3DLDF.texi
+# 3DLDF.dvi: $(3dldf_TEXINFOS)
+# 	texi2dvi 3DLDF.texi
 
-3DLDF.html: $(3dldf_TEXINFOS)
-	makeinfo --html --no-split 3DLDF.texi
+# 3DLDF.html: $(3dldf_TEXINFOS)
+# 	makeinfo --html --no-split 3DLDF.texi
 
-3DLDF.info: $(3dldf_TEXINFOS)
-	makeinfo 3DLDF.texi
+# 3DLDF.info: $(3dldf_TEXINFOS)
+# 	makeinfo 3DLDF.texi
 
-.PHONY: html-split
+# .PHONY: html-split
 
-html-split: $(3dldf_TEXINFOS)
-	makeinfo --html 3DLDF.texi
+# html-split: $(3dldf_TEXINFOS)
+# 	makeinfo --html 3DLDF.texi
+
 
 .PHONY : purge
 purge:

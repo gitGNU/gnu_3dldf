@@ -50,7 +50,7 @@ Transformation matrix.
 @c
 Focus for the @dfn{perspective projection}.
 
-@itemx pen
+@item pen
 
 @itemx dash_pattern
 
