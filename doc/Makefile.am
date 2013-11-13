@@ -58,7 +58,7 @@ SOURCES_MANUAL :=  3dldf.texi concidx.texi dttypes.texi dttypidx.texi fdl.texi \
                    funcidx.texi getstart.texi gpl.texi install.texi intro.texi \
                    invoking.texi varidx.texi
 
-EXTRA_DIST = 3dldf.ps 3dldf.pdf 3dldf.dvi 3dldf.html 3dldf.info $(SOURCES_MANUAL) 
+EXTRA_DIST = 3dldf.ps 3dldf.pdf 3dldf.dvi 3dldf.html 3dldf.info $(SOURCES_MANUAL) texinfo.tex
 
 all: 3dldf.dvi 3dldf.ps 3dldf.pdf 3dldf.info 3dldf.html html-split
 
