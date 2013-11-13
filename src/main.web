@@ -326,7 +326,7 @@ option.
 
 @<GCC command line option processing@>=
 {
-  bool DEBUG = true; /* |false| */ 
+  bool DEBUG = false; /* |true| */ 
   int option_ctr;
   int digit_optind = 0;
  

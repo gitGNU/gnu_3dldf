@@ -610,8 +610,6 @@ Added this section.
 
 @<Process command line options@>=
 
-   DEBUG = false; /* |true|  */;  
-
    while (1) 
       {
 

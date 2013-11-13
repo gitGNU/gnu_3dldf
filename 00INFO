@@ -23,7 +23,7 @@ more information, such as the ld(1) and ld.so(8) manual pages.
 ----------------------------------------------------------------------
 
 export LD_LIBRARY_PATH="/home/lfinsto/gcc-4.8.2/lib64/../lib64:$LD_LIBRARY_PATH"
-export PATH="/home/lfinsto/ttemp/automake-1.14/bin/:$PATH"
+export PATH="/home/lfinsto/gcc-4.8.2/bin/g++:/home/lfinsto/ttemp/automake-1.14/bin/:$PATH"
 ~/ttemp/automake-1.14/bin/aclocal && autoconf && autoheader && ~/ttemp/automake-1.14/bin/automake 
 configure --disable-shared CXX=/home/lfinsto/gcc-4.8.2/bin/g++ \
    LDFLAGS="-L/home/lfinsto/gcc-4.8.2/lib64/../lib64" --prefix=`pwd` LIBS="-lgsl -lgslcblas -lm"
