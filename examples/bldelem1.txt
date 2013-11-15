@@ -151,11 +151,10 @@
 %\vsize=297mm
 %\hsize=420mm
 
-%% \advance\voffset by -1in
-%% \advance\voffset by 1.25cm
-%% \advance\hoffset by -1in
-%% \advance\hoffset by 1cm
-
+\advance\voffset by -1in
+\advance\voffset by 1.25cm
+\advance\hoffset by -1in
+\advance\hoffset by 1cm
 
 
 \parindent=0pt
