@@ -11,7 +11,7 @@ TeX, dvips and ps2pdf to create graphics.
 
 The examples have been taken from the GNU 3DLDF website:  http://www.gnu.org/software/3dldf/
 
-This directory is included in the distribution of GNU 3DLDF 2.0 to compensate somewhat
+This directory is included in the distribution of GNU 3DLDF 2.0.* to compensate somewhat
 for the very incomplete manual.  The generated PostScript and PDF files are also included
 in the distribution, so that the results can be seen even if GNU 3DLDF hasn't been built yet,
 there are problems building it, or one or more of the other programs needed hasn't been 

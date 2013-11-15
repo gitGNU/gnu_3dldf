@@ -32,13 +32,13 @@ fi
 #### configure CXX=/home/lfinsto/gcc-4.8.2/bin/g++ LDFLAGS="-L/home/lfinsto/gcc-4.8.2/lib64/../lib64" \
 #####    --prefix=`pwd` $CONF_STATIC LIBS="-lgsl -lgslcblas -lm"
 
+LIBRARY_FLAGS="-L/home/lfinsto/glibc-install/lib64 "
+LIBRARY_FLAGS+="-L/home/lfinsto/glibc-install/lib -L/home/lfinsto/gcc-4.8.2/lib64/../lib64" 
 
-#### configure CPPFLAGS="-I/home/lfinsto/glibc-install/include" \
-#### LDFLAGS="-L/home/lfinsto/glibc-install/lib64 -L/home/lfinsto/glibc-install/lib64 
-#### -L/home/lfinsto/gcc-4.8.2/lib64/../lib64" \
-##### --prefix=`pwd` $CONF_STATIC LIBS="-lgsl -lgslcblas -lm"
+configure $CONF_STATIC CPPFLAGS="-I/home/lfinsto/glibc-install/include" \
+   LDFLAGS="$LIBRARY_FLAGS" --prefix=`pwd` $CONF_STATIC LIBS="-lgsl -lgslcblas -lm"
 
-configure --prefix=`pwd` $CONF_STATIC LIBS="-lgsl -lgslcblas -lm"
+#configure --prefix=`pwd` $CONF_STATIC LIBS="-lgsl -lgslcblas -lm"
 
 if test $# -gt 1
 then

@@ -1,7 +1,75 @@
 %% allplans.txt
 %% Created by Laurence D. Finston (LDF) Fri Nov 15 13:33:02 CET 2013
 
+%% * (1) Top
 
+%% ** (2) Building elements
+
+bldelem1.txt
+
+bldelem2.txt
+
+bldelem3.txt
+
+bldelem4.txt
+
+bldelem5.txt
+
+clktwr_01.txt
+
+%% ** (2) Polyhedra
+
+dodec_01.txt
+
+dodec_02.txt
+
+dodec_03.txt
+
+stgrddc1.txt %% Great Stellated Dodecahedron Net 1
+
+%% elpdmd01.txt %% Incomplete
+
+fctcn01.txt %% Facetted cone model
+
+grrhm_06.txt %% Great Rhombicosidodecahedron
+
+%% pprcuts.txt %% Papercuts
+
+rhmtrc_01.txt %% Rhombic Triacontahedron Net 1
+
+sphrmd01.txt
+
+sphrmd02.txt
+
+sphrmd03.txt
+
+
+
+%% ** (2) Stellation Patterns
+
+stlltn01.txt 
+
+stlltn02.txt
+
+stlltn04.txt
+
+stlltn05.txt
+
+stlltns.txt
+
+strspr01.txt
+
+%% ** (2) Sundials
+
+sundl_01.txt  
+
+sundl_02.txt
+
+sundl_03.txt
+
+%% ** (2)
+
+%% * (1) Local variables for Emacs
 
 %% Local Variables:
 %% mode:plain-TeX
