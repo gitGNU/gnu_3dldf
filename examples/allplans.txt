@@ -1,0 +1,8 @@
+%% allplans.txt
+%% Created by Laurence D. Finston (LDF) Fri Nov 15 13:33:02 CET 2013
+
+
+
+%% Local Variables:
+%% mode:plain-TeX
+%% End:
