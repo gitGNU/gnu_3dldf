@@ -134,8 +134,8 @@ Added this rule.
     } /* |if (   entry == static_cast<Id_Map_Entry_Node>(0) 
               || entry->object == static_cast<void*>(0))|  */
 
-@q **** (4) |!(   entry == static_cast<Id_Map_Entry_Node>(0) 
-               || entry->object == static_cast<void*>(0))|.@> 
+@q **** (4) |!(   entry == static_cast<Id_Map_Entry_Node>(0) @>
+@q             || entry->object == static_cast<void*>(0))|.@> 
 
 @ |!(entry == static_cast<Id_Map_Entry_Node>(0) || entry->object == static_cast<void*>(0))|.
 \initials{LDF 2007.10.13.}

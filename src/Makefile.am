@@ -1061,4 +1061,5 @@ query:
 ## outline-minor-mode:t
 ## outline-regexp:"## *\\*+"
 ## abbrev-mode:t
+## eval:(font-lock-mode -1)
 ## End:

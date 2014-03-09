@@ -104,8 +104,8 @@ Added this rule.
 
   entry = static_cast<Id_Map_Entry_Node>(@=$1@>);
 
-@q **** (4) Error handling:  
-|entry == static_cast<Id_Map_Entry_Node>(0) || entry->object == static_cast<void*>(0)|.@> 
+@q **** (4) Error handling:  @>
+@q |entry == static_cast<Id_Map_Entry_Node>(0) || entry->object == static_cast<void*>(0)|.  @> 
 
 @ Error handling:  
 |entry == static_cast<Id_Map_Entry_Node>(0) || entry->object == static_cast<void*>(0)|.
