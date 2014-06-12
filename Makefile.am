@@ -64,6 +64,20 @@ EXTRA_DIST = ChangeLog
 
 SUBDIRS = $(SOURCEDIR)
 
+.PHONY: run
+
+run:
+	$(MAKE) -C $(SOURCEDIR) run
+
+.PHONY: query
+
+query:
+	echo "libdir = $(libdir)"
+	echo "SOURCEDIR = $(SOURCEDIR)"
+	$(MAKE) -C $(SOURCEDIR) query
+
+
+
 query:
 	echo "libdir = $(libdir)"
 	echo "SOURCEDIR = $(SOURCEDIR)"

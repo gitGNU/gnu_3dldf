@@ -195,8 +195,14 @@ transfor.c++ transfor.h++: transfor.web
 	$(CXXLINK) -O0 $^
 
 
-#### * (1) query
+#### * (1) run
 
+.PHONY: run
+
+run: 3dldf$(EXEEXT)
+	3dldf$(EXEEXT)
+
+#### * (1) query
 
 .PHONY: query
 

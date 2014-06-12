@@ -91,6 +91,30 @@ AC_CHECK_FUNCS([floor sqrt trunc])
 AC_CONFIG_FILES([Makefile src/Makefile])
 
 # Checks for endianness.
-# AC_C_BIGENDIAN
+AC_C_BIGENDIAN
+
+AC_ARG_ENABLE([dummy],
+AC_HELP_STRING([--enable-debug-compile],
+[Enable conditionally compiled debugging output (this is the default).]),
+[],[])
+
+AC_ARG_ENABLE([debug-compile], 
+[AC_HELP_STRING([--disable-debug-compile],
+        [Disable conditionally compiled debugging output.])],
+[if test $enableval == "yes"
+then
+echo "Enabling conditional compilation of debugging output"
+AC_DEFINE([DEBUG_COMPILE], [1], 
+  [Define to 0 or 1 to disable or enable conditional compilation of debugging output.])
+else 
+echo "Disabling conditional compilation of debugging output"
+AC_DEFINE([DEBUG_COMPILE], [0], 
+  [])
+fi], 
+[echo "Enabling conditional compilation of debugging output"
+AC_DEFINE([DEBUG_COMPILE], [1], 
+[])	
+])
+
 
 AC_OUTPUT
