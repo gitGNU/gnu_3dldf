@@ -101,7 +101,7 @@ prbsnflx.c++: prbsnflx.l++
 
 #### *** (3) scanner
 
-scanner.o: scanner.c++ fldtype.hxx
+scanner.o: scanner.c++ dgrmtype.hxx fldtype.hxx
 	g++ -D DEBUG_COMPILE=1 -I. -c -g -o scanner.o scanner.c++
 
 scanner.c++ scanner.h++: scanner.l++

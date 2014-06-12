@@ -50,7 +50,7 @@
   
 .# Process this file with autoconf to produce a configure script.
 AC_INIT([GNU 3DLDF], [3.0.1], [Laurence.Finston@gmx.de], [3DLDF])
-AC_CONFIG_SRCDIR([src/main.web])
+AC_CONFIG_SRCDIR([src/dummy.cxx])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])

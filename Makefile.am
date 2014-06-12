@@ -67,6 +67,8 @@ SUBDIRS = $(SOURCEDIR)
 query:
 	echo "libdir = $(libdir)"
 	echo "SOURCEDIR = $(SOURCEDIR)"
+	$(MAKE) -C $(SOURCEDIR) query
+
 
 ## Local Variables:
 ## mode:Makefile

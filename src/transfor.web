@@ -4,7 +4,7 @@
 
 @q This file is part of GNU 3DLDF, a package for three-dimensional drawing. @>
 @q Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, @>
-@q 2011, 2012, 2013 The Free Software Foundation @>
+@q 2011, 2012, 2013, 2014 The Free Software Foundation @>
 
 @q GNU 3DLDF is free software; you can redistribute it and/or modify @>
 @q it under the terms of the GNU General Public License as published by @>
@@ -67,16 +67,6 @@ versions are now in their own RCS repository.
 @ Include files.
 @<Include files@>=
 
-#include "loader.h++"
-#include "pspglb.h++"
-#include "io.h++"
-#include "creatnew.h++"
-#include "pntrvctr.h++"
-#include "primes.h++"
-#include "complex.h++"
-#include "matrices.h++"
-#include "colors.h++"
-
 @q * {\bf Transform} class definition.@>
 @* {\bf Transform} class definition.@>
 The |Transform| class has a $4\times4$ transformation matrix as its only
@@ -84,16 +74,6 @@ data member and a number of member functions.  |Points|, |Pictures|,
 and |Focuses| contain |Transforms| as data members.
 \initials{LDF Undated.}
 
-@:!!@> !!  Remember to add items to |operator=| if if I add them to
-the class definition here.
-\initials{LDF Undated.}
-
-\LOG
-\initials{LDF 2003.07.04.}  
-Removed |friend| declaration for |Focus|.  I've added
-|set_element| and |get_element|, which are used in the |Focus|
-functions, so the latter need no longer be a |friend| of |Transform|.  
-\ENDLOG 
 
 @f Transform int  
 @<Define |class Transform|@>=
@@ -202,28 +182,6 @@ Transform::Transform(real r0_0, real r0_1, real r0_2, real r0_3,
   transform_matrix[3][3] = r3_3;
 }   
 
-@q ** (2) Pseudo-constructor for dynamic allocation.@>
-@*1 Pseudo-constructor for dynamic allocation.@>
-
-\LOG
-\initials{LDF 2004.05.09.}  
-Added this template function specialization.
-
-\initials{LDF 2004.10.11.}
-This declaration no longer declares a specialization.  
-Removed the definition for the specialization.
-Added |Scanner_Node scanner_node| argument.
-\ENDLOG 
-
-@<Declare non-member template functions for |Transform|@>=
-Transform* 
-create_new(const Transform* t, Scanner_Node scanner_node = 0);
-
-
-Transform* 
-create_new(const Transform& t, Scanner_Node scanner_node = 0);
-
-
 @q ** (2) Operators.@>
 @*1 Operators.
 \initials{LDF 2007.10.02.}
@@ -267,7 +225,6 @@ Transform::operator=(const Transform& t)
 \initials{LDF 2007.10.02.}
 
 
-
 @q **** (4)Is Equal.@>
 @*3 Is Equal.
 \initials{LDF 2007.10.14.}
@@ -289,7 +246,6 @@ is_equal(const Transform& t, real tolerance = -1) const;
 bool
 Transform::is_equal(const Transform& t, real tolerance) const
 {
-
     if (tolerance < 0)
        tolerance = .0001;
 
@@ -678,7 +634,7 @@ Transform::scale(real x, real y, real z)
 
 @q *** (3) Shear. @>
 @*2 Shear.
-@^\cfunc{Transform}{shear}@>
+\initials{LDF Undated.}  
 
 \LOG
 \initials{LDF 2002.10.15.}  
@@ -1531,8 +1487,9 @@ extern const Transform IDENTITY_TRANSFORM;
 @ This is what's compiled.
 @c
 @<Include files@>@;
+typedef real float;
+typedef real Transform_Matrix[4][4];
 @<Define |class Transform|@>@;
-@<Declare non-member template functions for |Transform|@>;
 @<Global variables@>@;
 @<Global constants@>@;
 @<Define |Transform| functions@>@;
@@ -1541,8 +1498,9 @@ extern const Transform IDENTITY_TRANSFORM;
 @(transfor.h@>=
 #ifndef LDF_TRANSFOR_H_KNOWN
 #define LDF_TRANSFOR_H_KNOWN
+typedef real float;
+typedef real Transform_Matrix[4][4];
 @<Define |class Transform|@>@;
-@<Declare non-member template functions for |Transform|@>;
 @<Declarations for the header file@>@;
 #endif
 

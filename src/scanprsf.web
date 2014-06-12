@@ -16657,7 +16657,6 @@ Scan_Parse::numeric_primary_rule_func_1(int point_part,
 @q ****** (6) Determine which coordinate we need.  @>
 @ Determine which coordinate we need.  This code depends on the fact that 
 |ZPART == YPART + 1 == XPART + 2 == WPART + 3|.
-
 \initials{LDF 2004.05.05.}
 
 @<Define |Scan_Parse| functions@>=
@@ -16669,7 +16668,7 @@ Scan_Parse::numeric_primary_rule_func_1(int point_part,
    if (DEBUG)
    {
       cerr_strm << thread_name 
-                << "In `Scan_Parse::numeric_primary_rule_func_1':"
+scanprsf.web                << "In `Scan_Parse::numeric_primary_rule_func_1':"
                 << endl
                 << "`point_part' == ";
 

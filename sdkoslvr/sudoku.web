@@ -96,6 +96,8 @@ ofstream out_strm;
 
 int pass_limit = 100;
 
+Diagram_Type<9, 9> *curr_diag;
+
 
 @q * (1) @>
 @
@@ -112,6 +114,8 @@ main(int argc, char *argv[])
 
   Diagram_Type<9, 9> diag;
 
+  curr_diag = &diag;
+   
   int status = 0;
 
   status = process_command_line_options(argc, argv);
@@ -245,7 +249,7 @@ main(int argc, char *argv[])
      cerr << "In `main':  `yylex' succeeded, returning 0."
           << endl;
 
-     diag.output();
+     diag.output(false, false, false);
 
   }  /* |else if (DEBUG)|  */
 #endif  /* |DEBUG_COMPILE|  */ 

@@ -78,6 +78,8 @@ template <int T, int U>
 class Diagram_Type
 {
 
+  friend int yylex(void);
+
   Field_Type diagram[T][U];
 
   int row_ctr;
@@ -248,7 +250,11 @@ int Diagram_Type<T, U>::solve(void)
 
       		   curr_field->show("*curr_field:");
 
+#if 0  
+/*   !! START HERE:  LDF 2014.03.11.  */
+
                    status = check(i, j);
+#endif 
 
                    cerr << endl;
      
@@ -660,389 +666,40 @@ int Diagram_Type<T, U>::solve(void)
 @<|Diagram_Type| function declarations@>=
 
 int 
-output(bool tex = false, bool full = false, bool final = false);
+output(void);
 
 @q *** (3) Definition  @>
 @
 @<|Diagram_Type::output| definition@>=
 
 template <int T, int U>
-int Diagram_Type<T, U>::output(bool tex, bool full, bool final)
+int Diagram_Type<T, U>::output(void)
 {
+   cerr << " | 0 1 2 3 4 5 6 7 8"
+        << endl
+        << "-  - - - - - - - - - "
+        << endl;
 
-   stringstream temp_strm;
-
-@q **** (4) @>
-
-   if (tex == false && full == true)
+   for (int i = 0; i < 9; ++i)
    {
-      string s;
 
-      for (int i = 0; i < row_ctr; ++i)
+      cerr << i << "| ";
+
+      for (int j = 0; j < 9; ++j)
       {
-
-          temp_strm << "|-----------|-----------|-----------|-----------|"
-                    << "-----------|-----------|-----------|-----------|-----------|"
-                    << endl
-                    << "|   [" << i << "][0]  | " << "  [" << i << "][1]  |"
-                    << "  [" << i << "][2]   | " << "  [" << i << "][3]  |"
-                    << "  [" << i << "][4]   | " << "  [" << i << "][5]  |"
-                    << "  [" << i << "][6]   | " << "  [" << i << "][7]  |"
-                    << "  [" << i << "][8]   | " << endl
-                    << "| ";
-
-          for (int j = 0; j < column_ctr; ++j)
+   
+          if (diagram[i][j].ctr == 1)
           {
-              diagram[i][j].output(i, j, false, false, &s);
-              temp_strm << s << " | ";
-              s = "";
+             diagram[i][j].output(i, j, full, false);
+             cerr << " ";
           }
-          temp_strm << endl;
+          else 
+             cerr << "-" << " ";
+
       }
-      temp_strm << "|-----------|-----------|-----------|-----------|"
-                << "-----------|-----------|-----------|-----------|-----------|"
-                << endl;
+      cerr << endl;
 
-
-      if (final)
-      {
-         cerr << temp_strm.str(); 
-         cout << temp_strm.str(); 
-      }
-
-      temp_strm.str("");
-
-   }  /* |if (tex == false && full == true)|  */
-
-
-@q **** (4) @>
-
-
-   else if (tex == false && full == false)
-   {
-
-       cerr << " | 0 1 2 3 4 5 6 7 8"
-            << endl
-            << "-  - - - - - - - - - "
-            << endl;
-
-
-       for (int i = 0; i < 9; ++i)
-       {
-
-          cerr << i << "| ";
-
-          for (int j = 0; j < 9; ++j)
-          {
-     
-              if (diagram[i][j].ctr == 1)
-              {
-                 diagram[i][j].output(i, j, full, false);
-                 cerr << " ";
-              }
-              else 
-                 cerr << "-" << " ";
-
-          }
-          cerr << endl;
-
-       }   
-
-   }  /* |else if (tex == false && full == false)|  */
-
-@q **** (4) @>
-@
-@<|Diagram_Type::output| definition@>=
-
-   else if (tex == true && full == false)
-   {
-       string s;
-
-       temp_strm.str("");
-
-       temp_strm << "pickup pensquare scaled 1pt;"
-                 << endl 
-                 << "path q;"
-                 << endl 
-                 << "pair p[];"
-                 << endl 
-                 << endl 
-                 << "p0 = (1cm, -1cm);" << endl << endl 
-                 << endl << endl 
-                 << "transform t[];" << endl << endl 
-                 << endl << endl 
-                 << "verbatimtex \\font\\large=cmr12 scaled \\magstep3 "
-                 << "etex"
-                 << endl << endl 
-                 << "beginfig(1);"
-                 << endl 
-                 << "q := (0, 0) -- (3cm, 0) -- (3cm, -3cm) -- (0, -3cm) -- cycle;"
-                 << endl 
-                 << endl 
-                 << "draw q withcolor (.5, .5, .5) withpen pensquare scaled 2pt;" 
-                 << endl 
-                 << endl 
-                 << "draw q shifted (6cm, 0) withcolor (.5, .5, .5) "
-                 << "withpen pensquare scaled 2pt;"
-                 << endl 
-                 << endl 
-                 << "draw q shifted (3cm, -3cm) withcolor (.5, .5, .5) "
-                 << "withpen pensquare scaled 2pt;" 
-                 << endl 
-                 << endl 
-                 << "draw q shifted (0cm, -6cm) withcolor (.5, .5, .5) "
-                 << "withpen pensquare scaled 2pt;" 
-                 << endl 
-                 << endl 
-                 << "draw q shifted (6cm, -6cm) withcolor (.5, .5, .5) "
-                 << "withpen pensquare scaled 2pt;" 
-                 << endl 
-                 << endl 
-                 << "for i = 0 downto -9:"
-                 << endl 
-                 << endl 
-                 << "   draw (0, i*cm) -- (9cm, i*cm);"  
-                 << endl 
-                 << endl 
-                 << "   draw (-i*cm, 0) -- (-i*cm, -9cm);"  
-                 << endl 
-                 << endl 
-                 << "endfor;"
-                 << endl 
-                 << endl
-                 << "t0 = identity shifted (1cm, 0);"
-                 << endl << endl;
-
-       for (int i = 0; i < 9; ++i)
-       {
-           for (int j = 0; j < 9; ++j)
-           {
-
-               diagram[i][j].output(i, j, false, true, &s);
-
-               temp_strm << "label(btex {\\large " << s << "} etex, p0);"
-                         << endl
-                         << endl
-                         << "p0 := p0 transformed t0;"
-                         << endl 
-                         << endl;
-
-           }
-
-           temp_strm << "p0 := p0 shifted (-9cm, -1cm);" << endl << endl;
-   
-
-       }
-
-       temp_strm << "endinput"
-                 << endl << endl;
-
-
-       if (out_strm && out_strm.is_open())
-          out_strm << temp_strm.str();
-       else
-          cout << temp_strm.str();
-
-       temp_strm.str("");
-
-
-   }  /* |else if (tex == true && full == false)|  */
-
-@q **** (4) @>
-@
-@<|Diagram_Type::output| definition@>=
-
-   else if (tex == true && full == false)
-   {
-       string s;
-
-       temp_strm.str("");
-
-       temp_strm << "pickup pensquare scaled 1pt;"
-                 << endl 
-                 << "path q;"
-                 << endl 
-                 << "pair p[];"
-                 << endl 
-                 << endl 
-                 << "p0 = (1cm, -1cm);" << endl << endl 
-                 << endl << endl;
-
-       for (int i = 0; i < 9; ++i)
-       {
-           for (int j = 0; j < 9; ++j)
-           {
-
-               diagram[i][j].output(i, j, false, true, &s);
-
-               temp_strm << "label(btex {\\large " << s << "} etex, p0);"
-                         << endl
-                         << endl
-                         << "p0 := p0 transformed t0;"
-                         << endl 
-                         << endl;
-
-           }
-
-           temp_strm << "p0 := p0 shifted (-9cm, -1cm);" << endl << endl;
-   
-
-       }
-
-       temp_strm << "endinput"
-                 << endl << endl;
-
-
-       if (out_strm && out_strm.is_open())
-          out_strm << temp_strm.str();
-       else
-          cout << temp_strm.str();
-
-       temp_strm.str("");
-
-
-   }  /* |else if (tex == true && full == false)|  */
-
-@q **** (4) @>
-
-@ In \.{cmr10 scaled \\magstephalf}, the digits and the en-dash all have the same
-width, so \.{\\hss} isn't really needed.  However, it may be if some other font is used.
-\initials{LDF 2014.03.07.}
-
-@<|Diagram_Type::output| definition@>=
-
-   else if (tex == true && full == true)
-   {
-       string s;
-
-
-
-       temp_strm << "verbatimtex \\font\\large=cmr17 scaled \\magstep3 "
-                 << "\\font\\small=cmr10 scaled \\magstep1 "
-                 << "\\font\\medium=cmr17 "
-                 << "\\setbox1=\\hbox{{\\small 0}} "
-                 << "\\setbox0=\\hbox to \\wd1{\\hss --\\hss} "
-                 << "etex "
-                 << endl << endl 
-                 << "pickup pensquare scaled 1pt;"
-                 << endl << endl 
-                 << "path q;"
-                 << endl << endl 
-                 << "pair p[];"
-                 << endl << endl 
-                 << "square_len = 5cm;"
-                 << endl << endl 
-                 << "p0 = (square_len/6, -square_len/6);"
-                 << endl 
-                 << "p1 = p0 shifted (0, square_len/3);"
-                 << endl 
-                 << "p2 = p0 shifted (-square_len/3, 0);"
-                 << endl << endl 
-                 << "transform t[];"
-                 << endl << endl 
-                 << "t0 = identity shifted (square_len/3, 0);"
-                 << endl 
-                 << "t1 = identity shifted (0, -square_len/3);"
-                 << endl << endl 
-                 << endl << endl 
-                 << "beginfig(1);"
-                 << endl << endl 
-                 << "q := (0, 0) -- (square_len, 0) -- (square_len, -square_len) "
-                 << "-- (0, -square_len) -- cycle;"
-                 << endl << endl 
-                 << "draw q withcolor (.5, .5, .5) withpen pensquare scaled 2pt;"
-                 << endl << endl 
-                 << "draw q shifted (2square_len, 0) withcolor (.5, .5, .5) "
-                 << "withpen pensquare scaled 2pt;"
-                 << endl << endl 
-                 << "draw q shifted (square_len, -square_len) withcolor (.5, .5, .5) "
-                 << "withpen pensquare scaled 2pt;"
-                 << endl << endl 
-                 << "draw q shifted (0cm, -2square_len) withcolor (.5, .5, .5) "
-                 << "withpen pensquare scaled 2pt;"
-                 << endl << endl 
-                 << "draw q shifted (2square_len, -2square_len) withcolor (.5, .5, .5) "
-                 << "withpen pensquare scaled 2pt;"
-                 << endl << endl;
-
-       for (int i = 0; i < 9; ++i)
-       {
-          temp_strm << "label(btex {\\medium " << i << "} etex, p1);"
-                    << endl
-                    << "label(btex {\\medium " << i << "} etex, p2);"
-                    << endl << endl 
-                    << "p1 := p1 transformed t0;"
-                    << endl 
-                    << "p2 := p2 transformed t1;"
-                    << endl << endl;
-       }
-
-       temp_strm << "for i = 0 downto -9:"
-                 << endl << endl 
-                 << "   draw (0, i*square_len/3) -- (3square_len, i*square_len/3);"
-                 << endl << endl 
-                 << "   draw (-i*square_len/3, 0) -- (-i*square_len/3, -3square_len);"
-                 << endl << endl 
-                 << "endfor;"
-                 << endl << endl;
-
-       for (int i = 0; i < 9; ++i)
-       {
-           temp_strm << "%% *** Row " << i << endl << endl;
-
-           for (int j = 0; j < 9; ++j)
-           {
-               s = "";
-
-               temp_strm << "%% [" << i << "][" << j << "]"
-                         << endl << endl;
-
-               diagram[i][j].output(i, j, false, true, &s);
- 
-               if (diagram[i][j].ctr == 1)
-               {
-                  temp_strm << "label(btex {\\large " << s << "} etex, p0);"
-                            << endl << endl;
-
-               }
-               else 
-               {
-                  temp_strm << "label(btex {\\small " << s << "} etex, "
-                            << "p0 shifted (0, square_len/16));";
-
-
-               }
- 
-               temp_strm << endl
-                         << endl
-                         << "p0 := p0 transformed t0;"
-                         << endl 
-                         << endl;
-
-
-           }
-
-           temp_strm << "p0 := p0 shifted (-3square_len, -square_len/3);" 
-                     << endl << endl;
-   
-
-       }  /* |for|  */
-
-       temp_strm << "endfig;" << endl << endl << "endinput" << endl << endl;
-
-       if (out_strm && out_strm.is_open())
-          out_strm << temp_strm.str();
-       else
-          cout << temp_strm.str();
-
-       temp_strm.str("");
-
-
-   }  /* |else if (tex == true && full == true)|  */
-
-
-
-
+   }  /* |for|  */   
 
    return 0;
 
@@ -1059,13 +716,16 @@ width, so \.{\\hss} isn't really needed.  However, it may be if some other font 
 
 @<|Diagram_Type| function declarations@>=
 
+#if 0  
 int 
 check(int ii, int jj);
+#endif 
 
 @q ** (2) Definition  @>
 @
 @<|Diagram_Type::check| definition@>=
 
+#if 0 
 template <int T, int U>
 int 
 Diagram_Type<T, U>::check(int ii, int jj)
@@ -1399,7 +1059,7 @@ Diagram_Type<T, U>::check(int ii, int jj)
 
 
 }  /* End of |Diagram_Type::check| definition  */
-
+#endif 
 
 
 

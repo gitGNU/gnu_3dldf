@@ -87,6 +87,7 @@ using namespace std;
 #endif
 
 #include <fldtype.hxx>
+#include <dgrmtype.hxx>
 
 @q ** (2) @>
 @
@@ -173,7 +174,7 @@ stringstream temp_strm;
    } /* |if (SCANNER_DEBUG)| */
 #endif /* |DEBUG_COMPILE| */
 
-   diagram[i][j].set(k);
+   curr_diag->diagram[i][j].set(k);
 
 }
 
@@ -270,7 +271,7 @@ stringstream temp_strm;
 @<Include header files@>@;@/
 @<Declarations@>@;@/
 struct File_Node* file_node_ptr = 0;
-extern Field_Type diagram[9][9];
+extern Diagram_Type<9, 9> *curr_diag;
 @=%}@>
 @<Options@>@;@/
 @<Definitions@>@;@/

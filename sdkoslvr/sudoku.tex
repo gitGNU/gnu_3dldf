@@ -1,91 +1,242 @@
-%%%% sudoku.tex
-%%%% Created by Laurence D. Finston (LDF) Wed Mar  5 17:16:41 CET 2014
-
-%%%% * Copyright and License.
-
-%%%% This file is part of GNU 3DLDF, a package for three-dimensional drawing. 
-%%%% Copyright (C) 2014 The Free Software Foundation                          
-
-%%%% GNU 3DLDF is free software; you can redistribute it and/or modify 
-%%%% it under the terms of the GNU General Public License as published by 
-%%%% the Free Software Foundation; either version 3 of the License, or 
-%%%% (at your option) any later version. 
-
-%%%% GNU 3DLDF is distributed in the hope that it will be useful, 
-%%%% but WITHOUT ANY WARRANTY; without even the implied warranty of 
-%%%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-%%%% GNU General Public License for more details. 
-
-%%%% You should have received a copy of the GNU General Public License 
-%%%% along with GNU 3DLDF; if not, write to the Free Software 
-%%%% Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA 
-
-%%%% GNU 3DLDF is a GNU package.  
-%%%% It is part of the GNU Project of the  
-%%%% Free Software Foundation 
-%%%% and is published under the GNU General Public License. 
-%%%% See the website http://www.gnu.org 
-%%%% for more information.   
-%%%% GNU 3DLDF is available for downloading from 
-%%%% http://www.gnu.org/software/3dldf/LDF.html. 
-
-%%%% (``@@'' stands for a single at-sign in the following paragraph.) 
-
-%%%% Please send bug reports to Laurence.Finston@@gmx.de 
-%%%% The mailing list help-3dldf@@gnu.org is available for people to 
-%%%% ask other users for help.  
-%%%% The mailing list info-3dldf@@gnu.org is for sending 
-%%%% announcements to users. To subscribe to these mailing lists, send an 
-%%%% email with ``subscribe <email-address>'' as the subject.  
-
-%%%% The author can be contacted at: 
-
-%%%% Laurence D. Finston 
-%%%% Kreuzbergring 41 
-%%%% D-37075 Goettingen 
-%%%% Germany 
-
-%%%% Laurence.Finston@@gmx.de (@@ stands for a single ``at'' sign.)
-
-\special{papersize=210mm, 297mm}
-\hsize=210mm
-\vsize=297mm
-
-\advance\voffset by -1in
-\advance\hoffset by -1in
-
-\advance\voffset by 2cm
-\advance\hoffset by 2cm
-
-\advance\vsize by -3.5cm
-\advance\hsize by -2cm
-
-\input epsf 
-
-\parskip=0pt
-\parindent=0pt
-
-\def\epsfsize#1#2{#1}
-
-\font\large=cmr12 scaled \magstep1
-
-\centerline{{\large H{\"o}rzu Nr.~9, ``Schwer'', 28.~Februar 2014}}
-
-{\large After 50 passes:}
-
-\vskip\baselineskip
+\input cwebmac
 
 
 
-\line{\epsffile{sudoku.1}\hss}
 
 
 
-\bye
 
-%% Local Variables: 
-%% mode:plain-Tex 
-%% abbrev-mode:t 
-%% eval:(outline-minor-mode t) 
-%% eval:(font-lock-mode -1) 
-%% End: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\M{1}
+\Y\B\4\X1:Include files\X${}\E{}$\6
+\8\#\&{include} \.{<stdlib.h>}\6
+\8\#\&{include} \.{<stdio.h>}\6
+\8\#\&{include} \.{<string.h>}\6
+\8\#\&{include} \.{<limits.h>}\6
+\8\#\&{include} \.{<errno.h>}\6
+\8\#\&{include} \.{<string>}\6
+\8\#\&{include} \.{<fstream>}\6
+\8\#\&{include} \.{<iostream>}\6
+\8\#\&{include} \.{<iomanip>}\6
+\8\#\&{include} \.{<sstream>}\6
+\8\#\&{include} \.{<bitset>}\6
+\8\#\&{if} \.{HAVE\_CONFIG\_H}\6
+\8\#\&{include} \.{<config.h>}\6
+\8\#\&{endif}\6
+\8\#\&{include} \.{<cmdlnopt.hxx>}\6
+\8\#\&{include} \.{<fldtype.hxx>}\6
+\8\#\&{include} \.{<dgrmtype.hxx>}\par
+\U6.\fi
+
+\M{2}
+\Y\B\4\X2:Global variable declarations\X${}\E{}$\C{ !! START HERE:  LDF
+2014.03.07. Start replacing \PB{\\{diagram}} with an object of type    \PB{%
+\\{Diagram\_Type}}.    Move the "checking" code here to `dgrmtype.web'.  }\6
+\\{string}\\{input\_filename};\6
+\\{string}\\{output\_filename};\7
+\&{int} \\{global\_debug\_level}${}\K\T{0};{}$\7
+\\{ofstream}\\{out\_strm};\7
+\&{int} \\{pass\_limit}${}\K\T{100}{}$;\par
+\U6.\fi
+
+\M{3}
+\Y\B\4\X3:\PB{\\{main}} definition\X${}\E{}$\6
+\&{int} \\{main}(\&{int} \\{argc}${},\39{}$\&{char} ${}{*}\\{argv}[\,]){}$\1\1
+$\{$ \&{bool} \.{DEBUG}${}\K\\{true}{}$;\C{ \PB{\\{false}}  }\7
+${}\\{Field\_Type}*\\{curr\_field}\K\T{0};{}$\6
+${}\\{Diagram\_Type}<\T{9},\39\T{9}>\\{diag};{}$\7
+\&{int} \\{status}${}\K\T{0};{}$\7
+${}\\{status}\K\\{process\_command\_line\_options}(\\{argc},\39\\{argv});{}$\6
+\8\#\&{if} \.{DEBUG\_COMPILE}\6
+\&{if} (\.{DEBUG})\5
+${}\{{}$\1\6
+${}\\{cerr}\LL\.{"input\_filename\ \ ==\ }\)\.{"}\LL\\{input\_filename}\LL%
+\\{endl}\LL\.{"output\_filename\ ==\ }\)\.{"}\LL\\{output\_filename}\LL%
+\\{endl};{}$\6
+\4${}\}{}$\C{ \PB{\&{if} (\.{DEBUG})}  }\2\6
+\8\#\&{endif}\C{ \PB{\.{DEBUG\_COMPILE}}  }\par
+\As4\ET5.
+\U6.\fi
+
+\M{4}
+\Y\B\4\X3:\PB{\\{main}} definition\X${}\mathrel+\E{}$\6
+\&{if} ${}(\R\\{output\_filename}.\\{empty}(\,)){}$\5
+${}\{{}$\1\6
+${}\\{out\_strm}.\\{open}(\\{output\_filename}.\\{c\_str}(\,));{}$\6
+\&{if} ${}(\R(\\{out\_strm}\W\\{out\_strm}.\\{is\_open}(\,))){}$\5
+${}\{{}$\1\6
+${}\\{cerr}\LL\.{"ERROR!\ \ In\ `main':\ }\)\.{\ `ofstream::open'\ fa}\)%
+\.{iled."}\LL\\{endl}\LL\.{"Failed\ to\ open\ `"}\LL\\{output\_filename}\LL%
+\.{"'."}\LL\\{endl}\LL\.{"Exiting\ `sudoku'\ un}\)\.{successfully\ with\ ex}\)%
+\.{it\ status\ 1."}\LL\\{endl};{}$\6
+\\{exit}(\T{1});\6
+\4${}\}{}$\C{ \PB{\&{if}}  }\2\6
+\&{else}\5
+${}\{{}$\6
+\8\#\&{if} \.{DEBUG\_COMPILE}\1\6
+\&{if} (\.{DEBUG})\5
+${}\{{}$\1\6
+${}\\{cerr}\LL\.{"In\ `main':\ \ `ofstre}\)\.{am::open'\ succeeded.}\)\.{"}\LL%
+\\{endl}\LL\.{"Opened\ `"}\LL\\{output\_filename}\LL\.{"'\ successfully."}\LL%
+\\{endl};{}$\6
+\4${}\}{}$\C{ \PB{\&{if} (\.{DEBUG})}  }\2\6
+\8\#\&{endif}\C{ \PB{\.{DEBUG\_COMPILE}}  }\7
+\&{time\_t} \\{curr\_time}${}\K\\{time}(\T{0});{}$\7
+${}\\{string}\\{temp\_str}\K\\{asctime}(\\{localtime}({\AND}\\{curr%
+\_time}));{}$\6
+${}\\{out\_strm}\LL\.{"\%\%\%\%\ "}\LL\\{output\_filename}\LL\\{endl}\LL\.{"\%%
+\%\%\%\ Generated\ "}\LL\\{temp\_str}.\\{substr}(\T{0},\39\\{temp\_str}.%
+\\{length}(\,)-\T{1})\LL\.{"\ by\ `sudoku'."}\LL\\{endl}\LL\\{endl};{}$\6
+\4${}\}{}$\C{ \PB{\&{else}}  }\2\6
+\4${}\}{}$\C{ \PB{\&{if} ${}(\R\\{output\_filename}.\\{empty}(\,))$}  }\2\6
+\8\#\&{if} \.{DEBUG\_COMPILE}\6
+\&{else}\1\6
+\&{if} (\.{DEBUG})\5
+${}\{{}$\1\6
+${}\\{cerr}\LL\.{"In\ `main':\ \ `output}\)\.{\_filename'\ is\ empty.}\)\.{\ \
+"}\LL\.{"Will\ write\ to\ stand}\)\.{ard\ output."}\LL\\{endl};{}$\6
+\4${}\}{}$\C{ \PB{\&{else} \&{if} (\.{DEBUG})}  }\2\2\6
+\8\#\&{endif}\C{ \PB{\.{DEBUG\_COMPILE}}  }\par
+\fi
+
+\M{5}
+\Y\B\4\X3:\PB{\\{main}} definition\X${}\mathrel+\E{}$\6
+\&{FILE} ${}{*}\\{fp};{}$\7
+\&{if} ${}(\R\\{input\_filename}.\\{empty}(\,)){}$\5
+${}\{{}$\1\6
+${}\\{errno}\K\T{0};{}$\6
+${}\\{fp}\K\\{fopen}(\\{input\_filename}.\\{c\_str}(\,),\39\.{"r"});{}$\6
+\&{if} ${}(\\{fp}\E\T{0}){}$\5
+${}\{{}$\1\6
+${}\\{cerr}\LL\.{"ERROR!\ \ In\ `main':\ }\)\.{\ `fopen'\ failed,\ ret}\)%
+\.{urning\ NULL:"}\LL\\{endl}\LL\\{strerror}(\\{errno})\LL\\{endl}\LL%
+\.{"Exiting\ `sudoku'\ un}\)\.{successfully\ with\ ex}\)\.{it\ status\ 1."}\LL%
+\\{endl};{}$\6
+${}\\{out\_strm}.\\{close}(\,);{}$\6
+\\{exit}(\T{1});\6
+\4${}\}{}$\2\6
+\&{else}\5
+${}\{{}$\1\6
+${}\\{cerr}\LL\.{"In\ `main':\ \ `fopen'}\)\.{\ succeeded.\ \ Will\ re}\)\.{ad\
+from\ "}\LL\.{"`"}\LL\\{input\_filename}\LL\.{"'."}\LL\\{endl};{}$\6
+${}\\{yyin}\K\\{fp};{}$\6
+\4${}\}{}$\2\6
+\4${}\}{}$\C{ \PB{\&{if} ${}(\R\\{input\_filename}.\\{empty}(\,))$}  }\2\6
+\&{else}\5
+${}\{{}$\1\6
+${}\\{yyin}\K\\{stdin};{}$\6
+\4${}\}{}$\2\6
+${}\\{status}\K\\{yylex}(\,);{}$\6
+\&{if} ${}(\\{status}\I\T{0}){}$\5
+${}\{{}$\1\6
+${}\\{cerr}\LL\.{"ERROR!\ \ In\ `main':\ }\)\.{\ `yylex'\ failed,\ ret}\)%
+\.{urning\ "}\LL\\{status}\LL\.{"."}\LL\\{endl}\LL\.{"Exiting\ `sudoku'\ un}\)%
+\.{successfully\ with\ ex}\)\.{it\ status\ 1."}\LL\\{endl};{}$\6
+${}\\{out\_strm}.\\{close}(\,);{}$\6
+\\{exit}(\T{1});\6
+\4${}\}{}$\2\6
+\8\#\&{if} \.{DEBUG\_COMPILE}\6
+\&{else}\1\6
+\&{if} (\.{DEBUG})\5
+${}\{{}$\1\6
+${}\\{cerr}\LL\.{"In\ `main':\ \ `yylex'}\)\.{\ succeeded,\ returnin}\)\.{g\
+0."}\LL\\{endl};{}$\6
+${}\\{diag}.\\{output}(\,);{}$\6
+\4${}\}{}$\C{ \PB{\&{else} \&{if} (\.{DEBUG})}  }\2\2\6
+\8\#\&{endif}\C{ \PB{\.{DEBUG\_COMPILE}}  }\6
+\&{if} (\\{fp})\5
+${}\{{}$\1\6
+\\{fclose}(\\{fp});\6
+${}\\{fp}\K\T{0};{}$\6
+\4${}\}{}$\2\6
+\8\#\&{if} \T{0}\6
+${}\\{diag}.\\{diagram}[\T{1}][\T{0}].\\{show}(\.{"diag.diagram[1][0]:}\)%
+\.{"});{}$\6
+\8\#\&{endif}\6
+\\{exit}(\T{0});\6
+\8\#\&{if} \T{0}\C{ !! START HERE:  LDF 2014.03.07.  Fix this.  }\6
+${}\\{diag}.\\{output}(\,);{}$\6
+\8\#\&{endif}\6
+\&{if} ${}(\\{Field\_Type}\DC\\{set\_field\_ctr}<\T{81}){}$\5
+${}\{{}$\1\6
+${}\\{cout}\LL\.{"ERROR!\ \ In\ `main':\ }\)\.{\ `Field\_Type::set\_fi}\)\.{eld%
+\_ctr'\ ==\ "}\LL\\{Field\_Type}\DC\\{set\_field\_ctr}\LL\.{"\ (<\ 81)"}\LL%
+\\{endl}\LL\.{"Failed\ to\ solve\ sud}\)\.{oku\ in\ "}\LL\\{pass\_limit}\LL\.{"%
+\ passes:"}\LL\\{endl};{}$\6
+${}\\{diag}.\\{output}(\\{false},\39\\{true},\39\\{true});{}$\6
+${}\\{diag}.\\{output}(\\{true},\39\\{true},\39\\{true});{}$\6
+${}\\{cout}\LL\.{"ERROR!\ \ In\ `main':\ }\)\.{\ `Field\_Type::set\_fi}\)\.{eld%
+\_ctr'\ ==\ "}\LL\\{Field\_Type}\DC\\{set\_field\_ctr}\LL\.{"\ (<\ 81)"}\LL%
+\\{endl}\LL\.{"Failed\ to\ solve\ sud}\)\.{oku\ in\ "}\LL\\{pass\_limit}\LL\.{"%
+\ passes."}\LL\\{endl}\LL\\{endl}\LL\.{"Exiting\ `sudoku'\ un}\)\.{successfully%
+\ with\ ex}\)\.{it\ status\ 3."}\LL\\{endl};{}$\6
+${}\\{out\_strm}.\\{close}(\,);{}$\6
+\\{exit}(\T{3});\6
+\4${}\}{}$\C{ \PB{\&{if}}  }\2\6
+\&{else}\5
+${}\{{}$\1\6
+${}\\{out\_strm}.\\{close}(\,);{}$\6
+\\{exit}(\T{0});\6
+\4${}\}{}$\2\6
+$\}{}$\C{ End of \PB{\\{main}} definition  }\par
+\fi
+
+\M{6}
+\Y\B\X1:Include files\X\7
+\&{using} \&{namespace} \&{std};\7
+\X2:Global variable declarations\X\7
+\&{int} \\{yylex}(\&{void});\6
+\&{extern} \&{FILE} ${}{*}\\{yyin},{}$ ${}{*}\\{yyout};{}$\7
+\X3:\PB{\\{main}} definition\X\par
+\fi
+
+
+\inx
+\fin
+\end
