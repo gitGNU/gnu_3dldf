@@ -69,7 +69,7 @@ bin_PROGRAMS = dummy$(EXEEXT) prbsnflx$(EXEEXT) 3dldf$(EXEEXT)
 
 dummy_SOURCES = dummy.cxx
 
-3dldf_SOURCES = glblcnst.web transfor.web main.web 
+3dldf_SOURCES = glblcnst.web main.web transfor.web utility.web
 
 
 #### AM_CPPFLAGS = -O0 ## This does not work, since '-02' is added
@@ -151,6 +151,12 @@ AM_LDFLAGS = -pthread
         fi; 
 	@rm -f diff_c.res diff_h.res 
 
+#### ** (2) Implicit rule for compiling C++ files. 
+####        LDF 2014.06.12.
+
+%.o: %.c++
+	$(CXXCOMPILE) -o $@ -O0 -c $<
+
 #### *** (3) prbsnflx
 
 ## 'prbsnflx' is a trivial Flex program that removes the '#line'
@@ -168,30 +174,28 @@ prbsnflx.c++: prbsnflx.l++
 	@cat prbsnflx.c++ >> AAAtmp.txt
 	@mv AAAtmp.txt prbsnflx.c++
 
-#### tranfor.web
+#### glblcnst.web
 
 glblcnst.o: glblcnst.c++ glblcnst.h++ 
-	$(CXXCOMPILE) -o $@ -O0 -c $<
-
-glblcnst.c++ glblcnst.h++: glblcnst.web
 
 #### main.web
 
-main.o: main.c++ main.h++ transfor.h++ 
-	$(CXXCOMPILE) -o $@ -O0 -c $<
+main.o: main.c++ main.h++ transfor.h++ utility.h++
 
-main.c++ main.h++: main.web
 
-#### tranfor.web
+#### transfor.web
 
 transfor.o: transfor.c++ transfor.h++ glblcnst.h++
+
+#### utility.web
+
+utility.o: utility.c++ utility.h++ glblcnst.h++
 	$(CXXCOMPILE) -o $@ -O0 -c $<
 
-transfor.c++ transfor.h++: transfor.web
 
 #### Link 3dldf
 
-3dldf$(EXEEXT): glblcnst.o main.o transfor.o
+3dldf$(EXEEXT): glblcnst.o main.o transfor.o utility.o
 	$(CXXLINK) -O0 $^
 
 
@@ -201,6 +205,19 @@ transfor.c++ transfor.h++: transfor.web
 
 run: 3dldf$(EXEEXT)
 	3dldf$(EXEEXT)
+
+
+#### * (1) purge
+
+.PHONY: purge
+
+purge: 
+	rm -f glblcnst.c glblcnst.h glblcnst.c++ glblcnst.h++ glblcnst.o \
+              transfor.c transfor.h transfor.c++ transfor.h++ transfor.o \
+              utility.c utility.h utility.c++ utility.h++ utility.o \
+              main.c main.h main.c++ main.h++ main.o \
+              3dldf$(EXEEXT)
+
 
 #### * (1) query
 

@@ -85,6 +85,7 @@
 #include <pthread.h>   
 
 #include "glblcnst.h++"
+#include "utility.h++"
 #include "transfor.h++"
 
 @q * (1) main function.  @>
@@ -99,19 +100,19 @@ main(int argc, char *argv[])
 
    bool DEBUG = true;
 
-#if 0 
    set_debug_level(DEBUG);
-#endif 
 
 #if DEBUG_COMPILE
    if (DEBUG)
    {
        cerr << "Entering `main'." << endl;
 
+#if 0 
 #ifdef WORDS_BIGENDIAN
        cerr << "WORDS_BIGENDIAN == " << WORDS_BIGENDIAN << endl;
 #else
        cerr << "WORDS_BIGENDIAN is not defined." << endl;
+#endif 
 #endif 
 
    }  /* |if (DEBUG)|  */
@@ -120,6 +121,17 @@ main(int argc, char *argv[])
 @q ** (2) @>
 @
 @<|main| definition@>=
+
+/* !! START HERE:  Testing.  LDF 2014.06.12. */
+
+   Transform<float> t;
+
+
+@q ** (2) @>
+@
+@<|main| definition@>=
+
+
 
 #if DEBUG_COMPILE
    if (DEBUG)
@@ -131,6 +143,8 @@ main(int argc, char *argv[])
 #endif  /* |DEBUG_COMPILE|  */ 
 
    pthread_exit(0);
+
+
 
 }  /* End of |main| definition  */
 
