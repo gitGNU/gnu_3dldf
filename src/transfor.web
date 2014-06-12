@@ -64,8 +64,63 @@ versions are now in their own RCS repository.
 \ENDLOG 
 
 @q * Include files. @>
+
 @ Include files.
+\initials{LDF 2014.06.12.}
+
 @<Include files@>=
+
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif 
+
+#define _GNU_SOURCE
+
+#include <stdlib.h>
+#include <stdio.h>   
+
+#include <string.h>
+#include <getopt.h> 
+
+#include <stdarg.h>
+#include <stdexcept>
+
+#include <algorithm>
+#include <bitset>
+#include <deque>
+#include <errno.h>
+#include <exception>
+
+#include <float.h>  
+#include <fstream>
+#include <functional>
+#include <iomanip>
+#include <ios>
+#include <iostream>
+#include <iterator>
+#include <limits.h>
+#include <limits>     
+#include <list>   
+#include <map>   
+
+#include <math.h>
+#include <new>
+
+#include <pthread.h>   
+
+#include <sstream>   
+#include <stack>   
+
+#include <string> 
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+#include <valarray>
+#include <vector>
+
+#include "glblcnst.h++"
+
 
 @q * {\bf Transform} class definition.@>
 @* {\bf Transform} class definition.@>
@@ -1487,8 +1542,11 @@ extern const Transform IDENTITY_TRANSFORM;
 @ This is what's compiled.
 @c
 @<Include files@>@;
-typedef real float;
+using namespace std;
 typedef real Transform_Matrix[4][4];
+class Point;
+class Path;
+using namespace tdldf;
 @<Define |class Transform|@>@;
 @<Global variables@>@;
 @<Global constants@>@;
@@ -1498,8 +1556,9 @@ typedef real Transform_Matrix[4][4];
 @(transfor.h@>=
 #ifndef LDF_TRANSFOR_H_KNOWN
 #define LDF_TRANSFOR_H_KNOWN
-typedef real float;
 typedef real Transform_Matrix[4][4];
+class Point;
+class Path;
 @<Define |class Transform|@>@;
 @<Declarations for the header file@>@;
 #endif

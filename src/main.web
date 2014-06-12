@@ -56,10 +56,101 @@
 @ Include files.
 
 @<Include files@>=
+
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif 
+
+#define _GNU_SOURCE
+
+#include <stdlib.h>
+#include <stdio.h>   
+
 #include <string.h>
 #include <getopt.h> 
+
+#include <stdarg.h>
+#include <stdexcept>
+
+#include <algorithm>
+#include <bitset>
+#include <deque>
+#include <errno.h>
+#include <exception>
+
+#include <float.h>  
+#include <fstream>
+#include <functional>
+#include <iomanip>
+#include <ios>
+#include <iostream>
+#include <iterator>
+#include <limits.h>
+#include <limits>     
+#include <list>   
+#include <map>   
+
+#include <math.h>
+#include <new>
+
+#include <pthread.h>   
+
+#include <sstream>   
+#include <stack>   
+
+#include <string> 
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+#include <valarray>
+#include <vector>
+
+#include "glblcnst.h++"
 #include "transfor.h++"
 
+@q * (1) main function.  @>
+@ |main| function.  
+\initials{LDF 2014.06.12.}
+
+@<|main| definition@>=
+int
+main(int argc, char *argv[])
+{
+
+   cerr << "Entering `main'." << endl;
+
+   cerr << "Exiting `main' successfully with exit status 0." 
+        << endl;
+
+   pthread_exit(0);
+
+}  /* End of |main| definition  */
+
+@q * (1) Putting |main| together.  @>
+@ Putting |main| together.  
+\initials{LDF 2014.06.12.}
+
+@q ** (2) @>
+
+@ This is what's compiled.
+\initials{LDF 2014.06.12.}
+
+@c
+@<Include files@>@;@/
+using namespace std;
+using namespace tdldf;
+@<|main| definition@>@;@/
+
+@q ** (2) @>
+
+@ This is what's written to the (empty) header file.
+\initials{LDF 2014.06.12.}
+
+@(main.h@>=
+#ifndef LDF_MAIN_H_KNOWN
+#define LDF_MAIN_H_KNOWN
+#endif
 
 @q * Emacs-Lisp code for use in indirect buffers  @>
 

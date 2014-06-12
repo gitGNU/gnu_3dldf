@@ -208,7 +208,7 @@ Now including \filename{limits}.
 
 #ifndef __DECCXX
 #ifndef _GNU_SOURCE
-#define _GNU_SOURCE
+
 #endif 
 #define LDF_GCC_3_3
 #undef   LDF_GCC_2_95 

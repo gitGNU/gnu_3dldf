@@ -65,14 +65,19 @@
 
 # ** (2) Variables.
 
-bin_PROGRAMS = dummy$(EXEEXT) prbsnflx$(EXEEXT) 
+bin_PROGRAMS = dummy$(EXEEXT) prbsnflx$(EXEEXT) 3dldf$(EXEEXT)
 
 dummy_SOURCES = dummy.cxx
+
+3dldf_SOURCES = glblcnst.web transfor.web main.web 
+
 
 #### AM_CPPFLAGS = -O0 ## This does not work, since '-02' is added
 ####                   ## to 'CXXCOMPILE'
 ####                   ## after the value of 'AM_CPPFLAGS'
 ####                   ## LDF 2014.06.12.
+
+AM_LDFLAGS = -pthread
 
 # 3dldf$(EXEEXT) 
 
@@ -165,11 +170,32 @@ prbsnflx.c++: prbsnflx.l++
 
 #### tranfor.web
 
-transfor.o: transfor.c++ transfor.h++ 
+glblcnst.o: glblcnst.c++ glblcnst.h++ 
+	$(CXXCOMPILE) -o $@ -O0 -c $<
+
+glblcnst.c++ glblcnst.h++: glblcnst.web
+
+#### main.web
+
+main.o: main.c++ main.h++ transfor.h++ 
+	$(CXXCOMPILE) -o $@ -O0 -c $<
+
+main.c++ main.h++: main.web
+
+#### tranfor.web
+
+transfor.o: transfor.c++ transfor.h++ glblcnst.h++
 	$(CXXCOMPILE) -o $@ -O0 -c $<
 
 transfor.c++ transfor.h++: transfor.web
 
+#### Link 3dldf
+
+3dldf$(EXEEXT): glblcnst.o main.o transfor.o
+	$(CXXLINK) -O0 $^
+
+
+#### * (1) query
 
 
 .PHONY: query
@@ -177,6 +203,7 @@ transfor.c++ transfor.h++: transfor.web
 query:
 	@echo "CXXCOMPILE == $(CXXCOMPILE)"
 	@echo "CXXLINK    == $(CXXLINK)"
+	@echo "LIBS       == $(LIBS)"
 
 # @echo "3dldflb_c_files == $(3dldflb_c_files)"
 # @echo "3dldflb_cpp_files == $(3dldflb_cpp_files)"
