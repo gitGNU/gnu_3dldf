@@ -49,7 +49,7 @@
 
   
 .# Process this file with autoconf to produce a configure script.
-AC_INIT([GNU 3DLDF], [2.0.3], [Laurence.Finston@gmx.de], [3DLDF])
+AC_INIT([GNU 3DLDF], [3.0.1], [Laurence.Finston@gmx.de], [3DLDF])
 AC_CONFIG_SRCDIR([src/main.web])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS(config.h)
@@ -65,35 +65,15 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_YACC
 AM_PROG_LEX
-AC_CHECK_PROG([HAVE_SHA224SUM], [sha224sum], 1, 0) 
-AC_CHECK_PROG([HAVE_SHA1SUM], [sha1sum], 1, 0) 
-AC_CHECK_PROG([HAVE_MD5SUM], [md5sum], 1, 0) 
-AC_CHECK_PROG([HAVE_CKSUM], [cksum], 1, 0) 
-AC_CHECK_PROG([HAVE_GZIP], [gzip], 1, 0) 
-
-AC_DEFINE_UNQUOTED([HAVE_SHA224SUM], $HAVE_SHA224SUM, 
-                   [Define to 1, if `sha224sum' is available, otherwise 0.])
-AC_DEFINE_UNQUOTED([HAVE_SHA1SUM], $HAVE_SHA1SUM, 
-                   [Define to 1, if `sha1sum' is available, otherwise 0.])
-				   
-AC_DEFINE_UNQUOTED([HAVE_MD5SUM], $HAVE_MD5SUM, 
-                   [Define to 1, if `md5sum' is available, otherwise 0.])
-
-AC_DEFINE_UNQUOTED([HAVE_CKSUM], $HAVE_CKSUM, 
-                   [Define to 1, if `cksum' is available, otherwise 0.])
-
-AC_DEFINE_UNQUOTED([HAVE_GZIP], $HAVE_GZIP, d
-                   [Define to 1, if `gzip' is available, otherwise 0.])
 
 # Checks for libraries.
-#AC_CHECK_LIB(m, trunc)
-AC_CHECK_LIB(gsl, gsl_matrix_alloc)
+# AC_CHECK_LIB(m, trunc)
+# AC_CHECK_LIB(gsl, gsl_matrix_alloc)
 
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([errno.h float.h limits.h stdlib.h \
-                  unistd.h pthread.h gsl/gsl_complex.h \
-                  gsl/gsl_complex_math.h gsl/gsl_matrix.h])
+                  unistd.h pthread.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 #AC_C_CONST
@@ -108,32 +88,9 @@ AC_CHECK_TYPES([unsigned long long, unsigned long, unsigned int])
 AC_SEARCH_LIBS(trunc, m)
 AC_CHECK_FUNCS([floor sqrt trunc])
 
-AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile doc/old_doc/Makefile examples/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile])
 
 # Checks for endianness.
-AC_C_BIGENDIAN
-
-AC_ARG_ENABLE([dummy],
-AC_HELP_STRING([--enable-debug-compile],
-[Enable conditionally compiled debugging output (this is the default).]),
-[],[])
-
-AC_ARG_ENABLE([debug-compile], 
-[AC_HELP_STRING([--disable-debug-compile],
-        [Disable conditionally compiled debugging output.])],
-[if test $enableval == "yes"
-then
-echo "Enabling conditional compilation of debugging output"
-AC_DEFINE([DEBUG_COMPILE], [1], 
-  [Define to 0 or 1 to disable or enable conditional compilation of debugging output.])
-else 
-echo "Disabling conditional compilation of debugging output"
-AC_DEFINE([DEBUG_COMPILE], [0], 
-  [])
-fi], 
-[echo "Enabling conditional compilation of debugging output"
-AC_DEFINE([DEBUG_COMPILE], [1], 
-[])	
-])
+# AC_C_BIGENDIAN
 
 AC_OUTPUT
