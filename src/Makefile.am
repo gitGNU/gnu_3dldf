@@ -202,7 +202,8 @@ prbsnflx.c++: prbsnflx.l++
 
 #### cmdlnopt.web
 
-cmdlnopt.o: cmdlnopt.c++ cmdlnopt.h++ glblcnst.h++ glblvrbl.h++ utility.h++
+cmdlnopt.o: cmdlnopt.c++ cmdlnopt.h++ glblcnst.h++ glblvrbl.h++ \
+                                      utility.h++
 
 #### glblcnst.web
 

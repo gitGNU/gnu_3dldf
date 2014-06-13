@@ -45,12 +45,16 @@ pthread_mutex_t cerr_mutex;
 pthread_mutex_t cout_mutex;
 pthread_mutex_t log_strm_mutex;
 
+unsigned int default_transform_type = 0;  
+
 @
 @<|extern| declarations for global variables@>=
 
 extern pthread_mutex_t cerr_mutex;
 extern pthread_mutex_t cout_mutex;
 extern pthread_mutex_t log_strm_mutex;
+
+extern unsigned int default_transform_type;
 
 @q ** (2) Putting `glblvrbl.web' together.  @>
 

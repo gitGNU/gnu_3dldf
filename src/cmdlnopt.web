@@ -154,6 +154,8 @@ process_command_line_options(int argc, char *argv[])
 
   const unsigned short VERSION_INDEX              = 0;
   const unsigned short HELP_INDEX                 = 1;
+  const unsigned short FLOAT_INDEX                = 2;
+  const unsigned short DOUBLE_INDEX               = 3;
 
 @q *** Option struct.@>
 @
@@ -163,6 +165,8 @@ process_command_line_options(int argc, char *argv[])
   {
      {"version", 0, 0, 0},
      {"help", 0, 0, 0},
+     {"float", 0, 0, 0},
+     {"double", 0, 0, 0},
      {0, 0, 0, 0}
   };
 
@@ -291,7 +295,54 @@ process_command_line_options(int argc, char *argv[])
  
         }  /* |else if (option_index == HELP_INDEX)|  */
 
+@q ****** (6) float.@>
+@ float.
+\initials{LDF 2014.06.13.}
 
+@<|process_command_line_options| definition@>=
+
+        if (option_index == FLOAT_INDEX)
+        {
+#if DEBUG_COMPILE
+           if (DEBUG)
+           {
+              cerr << "[Thread 0] In `process_command_line_options':"
+                   << endl
+                   << "`--float' option."
+                   << endl 
+                   << "Will declare `Transforms' and `Points' with "
+                   << "`float' values per default."
+                   << endl;
+
+           }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+        }  /* |if (option_index == FLOAT_INDEX)|  */
+  
+@q ****** (6) double.@>
+@ double.
+\initials{LDF 2014.06.13.}
+
+@<|process_command_line_options| definition@>=
+
+        if (option_index == DOUBLE_INDEX)
+        {
+#if DEBUG_COMPILE
+           if (DEBUG)
+           {
+              cerr << "[Thread 0] In `process_command_line_options':"
+                   << endl
+                   << "`--double' option."
+                   << endl 
+                   << "Will declare `Transforms' and `Points' with "
+                   << "`double' values per default."
+                   << endl;
+
+           }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+        }  /* |if (option_index == DOUBLE_INDEX)|  */
+  
 @q ****** (6) @>
 
       }  /* |else if (option_ctr == 0)|  */
@@ -300,8 +351,13 @@ process_command_line_options(int argc, char *argv[])
 
       else if (option_ctr == '?')
       {
-        cerr << "getopt_long() returned ambiguous match. Breaking."
-             << endl << endl << flush;
+        cerr << "[Thread 0] ERROR!  In `process_command_line_options':"
+             << endl 
+             << "`getopt_long_only' returned ambiguous match."
+             << endl
+             << "Breaking."
+             << endl;
+
         break;
 
       }  /* |else if (option_ctr == '?')|  */
@@ -310,8 +366,14 @@ process_command_line_options(int argc, char *argv[])
 
     else
     {
-       cerr << "getopt_long() returned invalid option."
-            << endl << flush;
+       cerr << "[Thread 0] ERROR!  In `process_command_line_options':"
+            << endl 
+            << "`getopt_long_only' returned invalid option."
+            << endl 
+            << "Breaking."
+            << endl;
+
+       break;
     }
 
 @q ***** (5) @>
@@ -319,21 +381,69 @@ process_command_line_options(int argc, char *argv[])
   } /* |while|  */
 
 
+@q **** (4) Non-option arguments.  @>
+
+@ Non-option arguments.
+\initials{LDF 2014.06.13.}
+
+@<|process_command_line_options| definition@>=
+
+@q ***** (5) @>
+        
+  if (optind < argc)
+  {
+#if DEBUG_COMPILE
+      if (DEBUG)
+      {
+         cerr << "[Thread 0] In `process_command_line_options':"
+              << endl
+              << "Non-option command-line arguments:"
+              << endl;
+
+         for (int i = 1; optind < argc; ++optind, ++i)
+         {
+            cerr << setw(3) << i << ". " << argv[optind] 
+                 << endl;
+
+         }  /* |for|  */
+
+      }  /* |if (DEBUG)|  */
+
+#endif  /* |DEBUG_COMPILE|  */ 
+     
+  } /* |if (optind < argc)|  */
+
+
+@q ***** (5) @>
+
+#if DEBUG_COMPILE
+  else if (DEBUG)
+  {
+      cerr << "[Thread 0] In `process_command_line_options':"
+           << endl
+           << "No non-option command-line arguments."
+           << endl;
+
+  }  /* |else if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+  
+@q ***** (5) @>
+
 @q **** (4) @>
 @
 @<|process_command_line_options| definition@>=
 
 #if DEBUG_COMPILE
-   if (DEBUG)
-   {
-      cerr << "[Thread 0] Exiting `process_command_line_options' successfully "
-           << "with return value 0."
-           << endl;
+  if (DEBUG)
+  {
+     cerr << "[Thread 0] Exiting `process_command_line_options' successfully "
+          << "with return value 0."
+          << endl;
 
-   }  /* |if (DEBUG)|  */
+  }  /* |if (DEBUG)|  */
 #endif  /* |DEBUG_COMPILE|  */  
 
-   return 0;
+  return 0;
 
 }  /* End of |process_command_line_options| definition  */
 
