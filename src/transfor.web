@@ -78,75 +78,84 @@ versions are now in their own RCS repository.
 
 #include <stdlib.h>
 #include <stdio.h>   
-
 #include <string.h>
-#include <getopt.h> 
-
-#include <stdarg.h>
-#include <stdexcept>
-
-#include <algorithm>
-#include <bitset>
-#include <deque>
 #include <errno.h>
-#include <exception>
-
+#include <math.h>
 #include <float.h>  
+#include <limits.h>
+
+#include <string> 
 #include <fstream>
-#include <functional>
 #include <iomanip>
 #include <ios>
 #include <iostream>
-#include <iterator>
-#include <limits.h>
-#include <limits>     
-#include <list>   
-#include <map>   
+#include <sstream>   
 
-#include <math.h>
-#include <new>
+#include <limits>     
 
 #include <pthread.h>   
 
-#include <sstream>   
-#include <stack>   
-
-#include <string> 
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-
-#include <valarray>
-#include <vector>
-
 #include "glblcnst.h++"
-
 
 @q * {\bf Transform} class definition.@>
 @* {\bf Transform} class definition.@>
-The |Transform| class has a $4\times4$ transformation matrix as its only
-data member and a number of member functions.  |Points|, |Pictures|,
-and |Focuses| contain |Transforms| as data members.
-\initials{LDF Undated.}
-
+\initials{LDF 2014.06.13.}
 
 @f Transform int  
+
 @<Declare |class Transform|@>=
 
-template <class C> class Transform
+template <class C, int T = 0> class Transform
 {
-
   C transform_matrix[4][4];
 
-  public:
-  
-  @<Declare |Transform| functions@>@;@/
+  int type;
+  string type_name; 
 
+  public:
+ 
+  @<Declare |Transform| functions@>@;@/
 				    
 };
 
 @q ** (2) Constructors @>
 @ Constructors.
+
+@q *** (3) Default constructor.  @>
+@ Default constructor.
+\initials{LDF 2014.06.13.}
+
+@<Declare |Transform| functions@>=
+
+Transform(void);
+
+@
+@<|Transform::Transform| definitions@>=
+
+template <class C, int T>
+Transform<C, T>::Transform(void)
+{
+  type = T;
+  
+  if (type == 0)
+     type_name = "float";
+  else if (type == 1)
+     type_name = "double";
+  else if (type == 2)
+     type_name = "long double";
+  else 
+     type_name = "unknown type";
+
+  for(int i = 0; i < 4; i++)
+  {
+     for (int j = 0; j < 4; j++)
+     {
+	transform_matrix[i][j] = static_cast<C>(0.0);
+     }
+
+  }  /* |for|  */
+
+}  /* End of |Transform| default constructor  */
 
 @q ** (2) Show.  @>
 @ Show (|show|).  
@@ -155,16 +164,20 @@ template <class C> class Transform
 @<Declare |Transform| functions@>=
 
 void
-show(string s = "Transform:")
+show(string s = "Transform:");
 
 @
 @<|Transform::show| definition@>=
-
+template <class C, int T>
 void
-Transform::show(string s = "Transform:")
+Transform<C, T>::show(string s)
 {
   cout << s 
         << endl
+        << "type:       " << type
+        << endl 
+        << "type_name:  " << type_name
+        << endl 
         << "transform_matrix:"
         << endl;
 
@@ -183,9 +196,6 @@ Transform::show(string s = "Transform:")
 
 }  /* End of |Transform::show| definition  */
 
-
-
-
 @q * Putting {\bf Transform} together. @>
 @ Putting {\bf Transform} together.
 
@@ -195,6 +205,7 @@ Transform::show(string s = "Transform:")
 using namespace std;
 using namespace tdldf;
 @<Declare |class Transform|@>@;
+@<|Transform::Transform| definitions@>@;@/
 @<|Transform::show| definition@>@;@/
 
 @ This is what's written to \filename{transfor.h}.
@@ -202,6 +213,8 @@ using namespace tdldf;
 #ifndef TRANSFOR_H_KNOWN
 #define TRANSFOR_H_KNOWN
 @<Declare |class Transform|@>@;
+@<|Transform::Transform| definitions@>@;@/
+@<|Transform::show| definition@>@;@/
 #endif
 
 
