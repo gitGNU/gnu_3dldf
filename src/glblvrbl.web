@@ -1,0 +1,114 @@
+@q glblvrbl.web  @>
+@q Created by Laurence D. Finston (LDF) Fr 13 Jun 2014 13:16:35 CEST @>
+
+@q ** (2)  Global variables.  (glblvrbl.web)  @>
+@* Global variables.  (\filename{glblvrbl.web})
+\initials{LDF 2014.06.13.}
+
+\LOG
+\initials{LDF 2014.06.13.}
+Added this file.
+\ENDLOG
+
+@q ** (2) Include files  @>
+
+@ Include files.
+
+@<Include files@>=
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <limits.h>
+#include <float.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include "glblcnst.h++"
+
+@q * (1) Global variables.  @>
+@ Global variables.
+\initials{LDF 2014.06.13.}
+
+\LOG
+\initials{LDF 2014.06.13.}
+Added this section.
+\ENDLOG
+
+@<Global variables@>=
+
+pthread_mutex_t cerr_mutex;
+pthread_mutex_t cout_mutex;
+pthread_mutex_t log_strm_mutex;
+
+@
+@<|extern| declarations for global variables@>=
+
+extern pthread_mutex_t cerr_mutex;
+extern pthread_mutex_t cout_mutex;
+extern pthread_mutex_t log_strm_mutex;
+
+@q ** (2) Putting `glblvrbl.web' together.  @>
+
+@ Putting {\tt glblvrbl.web\PERIOD web} together.
+
+@q *** (3) This is what's compiled.  @>
+
+This is what's compiled.  
+\initials{LDF 2014.06.13.}
+
+@c
+@<Include files@>@;@/
+
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif 
+
+using namespace std;
+using namespace tdldf;
+
+namespace tdldf
+{
+@<Global variables@>@;@/
+};
+
+@q *** (3) This is what's written to the header file.  @>
+
+@ This is what's written to the header file.  
+\initials{LDF 2014.06.12.}
+
+@(glblcnst.h@>=
+
+#ifndef GLBLVRBL_H
+#define GLBLVRBL_H 1
+
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif 
+
+using namespace std;
+using namespace tdldf;
+
+namespace tdldf
+{
+   @<|extern| declarations for global variables@>@;@/
+};
+#endif 
+
+@q * (1) Emacs-Lisp code for use in indirect buffers  @>
+
+@q (progn (cweb-mode) (outline-minor-mode) (abbrev-mode t))           @>
+
+@q * (1) Local variables for Emacs @>
+
+@q Local Variables: @>
+@q mode:CWEB @>
+@q eval:(display-time) @>
+@q abbrev-mode: t @>
+@q eval:(read-abbrev-file) @>
+@q indent-tabs-mode:nil @>
+@q eval:(outline-minor-mode) @>
+@q fill-column:80 @>
+@q End: @>
