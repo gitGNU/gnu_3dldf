@@ -121,6 +121,56 @@ set_debug_level(bool &DEBUG)
 
 }  /* End of |set_debug_level| definition  */
 
+
+@q ** (2) Mutex functions.  @>
+
+@ Mutex functions.
+\initials{LDF 2014.06.13.}
+
+\LOG
+\initials{LDF 2014.06.13.}
+Added this section.
+\ENDLOG
+
+@q *** (3) Lock and unlock |cerr_mutex|.  @>
+@ Lock and unlock |cerr_mutex|.
+\initials{LDF 2014.06.13.}
+
+\LOG
+\initials{LDF 2014.06.13.}
+Added this functions.
+\ENDLOG
+
+@q *** (3) Declarations @>
+
+@<Declare mutex functions@>=
+
+int
+lock_cerr_mutex(void);
+
+int
+unlock_cerr_mutex(void); 
+
+@q *** (3) Definitions @>
+@
+@<|lock_cerr_mutex| definition@>=
+
+int
+lock_cerr_mutex(void)
+{
+   return 0;
+}
+
+@
+@<|unlock_cerr_mutex| definition@>=
+
+int
+unlock_cerr_mutex(void)
+{
+   return 0;
+}
+
+
 @q * (1) Putting utility functions together.@>
 @* Putting utility functions together.
 \initials{LDF 2014.06.12.}
@@ -132,7 +182,11 @@ This is what's compiled.
 namespace tdldf
 {
    @<|set_debug_level| declaration@>@;@/
+   @<Declare mutex functions@>@;@/
+
    @<|set_debug_level| definition@>@;@/
+   @<|lock_cerr_mutex| definition@>@;@/
+   @<|unlock_cerr_mutex| definition@>@;@/
 };
 
 @ This is what's written to \filename{utility.h}.
@@ -144,6 +198,7 @@ namespace tdldf
 namespace tdldf
 {
    @<|set_debug_level| declaration@>@;@/
+   @<Declare mutex functions@>@;@/
 };
 #endif 
 
