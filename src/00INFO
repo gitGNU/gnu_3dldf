@@ -1,0 +1,12 @@
+%% 00INFO
+%% Created by Laurence D. Finston (LDF) Fr 13 Jun 2014 15:15:20 CEST
+
+%% * (1)
+
+export EDITOR='emacs -geometry 80x40'
+
+%% * (1)
+
+%% Local Variables:
+%% mode:plain-TeX
+%% End:
