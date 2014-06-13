@@ -93,3 +93,27 @@ Added this file.
 #include "glblcnst.h++"
 #include "glblvrbl.h++"
 #include "utility.h++"
+
+@q * Putting command-line option processing together. @>
+@ Putting command-line option processing together.
+\initials{LDF 2014.06.13.}
+
+@ This is what's compiled.
+@c
+@<Include files@>@;
+using namespace std;
+using namespace tdldf;
+
+@ This is what's written to \filename{cmdlnopt.h}.
+@(cmdlnopt.h@>=
+#ifndef CMDLNOPT_H_KNOWN
+#define CMDLNOPT_H_KNOWN
+#endif
+
+
+@q Local Variables: @>
+@q mode:CWEB @>
+@q indent-tabs-mode:nil @>
+@q outline-minor-mode:t @>
+@q End: @>
+
