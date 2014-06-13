@@ -26,8 +26,8 @@ Added this file.
 #include <config.h>
 #endif
 
-@q * (1) Global Constants.  @>
-@ Global Constants.
+@q * (1) Global constants.  @>
+@ Global constants.
 \initials{LDF 2014.06.12.}
 
 \LOG
@@ -35,19 +35,14 @@ Added this file.
 Added this section.
 \ENDLOG
 
-@<Global Constants@>=
+@<Global constants@>=
 
-extern const real INVALID_REAL = FLT_MAX;
-extern const real ZERO_REAL    = 0;
-extern const real PI           = M_PI;
-
+extern const float PI = M_PI;
 
 @
 @<|extern| declarations for global constants@>=
 
-extern const real INVALID_REAL;
-extern const real ZERO_REAL;
-extern const real PI;
+extern const float PI;
 
 @q ** (2) Putting `glblcnst.web' together.  @>
 
@@ -67,12 +62,10 @@ This is what's compiled.
 
 using namespace std;
 
-typedef float real;
-
 
 namespace tdldf
 {
-@<Global Constants@>@;@/
+@<Global constants@>@;@/
 };
 
 @q *** (3) This is what's written to the header file.  @>
@@ -90,8 +83,6 @@ namespace tdldf
 #endif 
 
 using namespace std;
-
-typedef float real;
 
 namespace tdldf
 {

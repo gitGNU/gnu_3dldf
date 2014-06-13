@@ -158,6 +158,8 @@ unlock_cerr_mutex(void);
 int
 lock_cerr_mutex(void)
 {
+   
+
    return 0;
 }
 

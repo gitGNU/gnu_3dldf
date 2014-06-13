@@ -85,6 +85,7 @@
 #include <pthread.h>   
 
 #include "glblcnst.h++"
+#include "glblvrbl.h++"
 #include "utility.h++"
 #include "transfor.h++"
 
@@ -99,6 +100,8 @@ main(int argc, char *argv[])
 @q ** (2) @>
 
    bool DEBUG = true;
+
+   int status = 0;
 
    set_debug_level(DEBUG);
 
@@ -118,20 +121,171 @@ main(int argc, char *argv[])
    }  /* |if (DEBUG)|  */
 #endif  /* |DEBUG_COMPILE|  */ 
 
+@q ** (2) Initializations.  @>
+@ Initializations.
+\initials{LDF 2014.06.13.}
+
+\LOG
+\initials{LDF 2014.06.13.}
+Added this section.
+\ENDLOG
+
+@q *** (3) Register functions with |atexit|.  @>
+
+@ Register functions with |atexit|.  Currently, only |finish|
+is registered.
+\initials{LDF 2014.06.13.}
+
+@<|main| definition@>=
+
+@q **** (4) @>
+
+   errno = 0;
+   status = atexit(finish);
+
+   if (status == -1)
+   {
+       cerr << "[Thread 0] ERROR!  In `main':  `atexit' failed, "
+            << "returning -1:"
+            << endl
+            << strerror(errno)
+            << endl
+            << "Failed to register `finish' using `atexit'."
+            << endl
+            << "Exiting `3dldf' unsuccessfully with exit status 1."
+            << endl;
+
+       exit(1);
+
+   }  /* |if (status == -1)|  */
+
+@q **** (4) @>  
+
+#if DEBUG_COMPILE
+   else if (DEBUG)
+   {
+       cerr << "[Thread 0] In `main':  `atexit' succeeded."
+            << endl 
+            << "Registered `finish' using `atexit' successfully."
+            << endl;
+
+   }  /* |else if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+@q **** (4) @>
+
+@q *** (3) Initialize mutexes.  @>
+
+@ Initialize mutexes.
+\initials{LDF 2014.06.13.}
+
+@q **** (4) |cout_mutex|. @>
+
+@ |cout_mutex|.
+\initials{LDF 2014.06.13.}
+
+@<|main| definition@>=
+
+   status = pthread_mutex_init(&cout_mutex, 0);
+
+   if (status != 0)
+   {
+       cerr << "[Thread 0] ERROR!  In `main':  `pthread_mutex_init' "
+            << "failed, returning " << status << ":"
+            << endl
+            << strerror(status)
+            << endl
+            << "Failed to initialize `cout_mutex'."
+            << endl 
+            << "Exiting `3dldf' unsuccessfully with exit status 1."
+            << endl;
+
+       exit(1);
+
+   }  /* |if (status != 0)|  */
+
+@q ***** (5) @>
+
+#if DEBUG_COMPILE
+   else if (DEBUG)
+   {
+       cerr << "[Thread 0] In `main':  `pthread_mutex_init' "
+            << "succeeded, returning 0."
+            << endl
+            << "Initialized `cout_mutex' successfully."
+            << endl;
+
+   }  /* |else if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+@q **** (4) |cerr_mutex|. @>
+
+@ |cerr_mutex|.
+\initials{LDF 2014.06.13.}
+
+@<|main| definition@>=
+
+   status = pthread_mutex_init(&cerr_mutex, 0);
+
+   if (status != 0)
+   {
+       cerr << "[Thread 0] ERROR!  In `main':  `pthread_mutex_init' "
+            << "failed, returning " << status << ":"
+            << endl
+            << strerror(status)
+            << endl
+            << "Failed to initialize `cerr_mutex'."
+            << endl 
+            << "Exiting `3dldf' unsuccessfully with exit status 1."
+            << endl;
+
+       exit(1);
+
+   }  /* |if (status != 0)|  */
+
+@q ***** (5) @>
+
+#if DEBUG_COMPILE
+   else if (DEBUG)
+   {
+       cerr << "[Thread 0] In `main':  `pthread_mutex_init' "
+            << "succeeded, returning 0."
+            << endl
+            << "Initialized `cerr_mutex' successfully."
+            << endl;
+
+   }  /* |else if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
 @q ** (2) @>
 @
 @<|main| definition@>=
 
 /* !! START HERE:  Testing.  LDF 2014.06.12. */
 
-   Transform<float> t;
+   Transform<float>     t0;
+   Transform<double, 1> t1; 
 
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+
+       t0.show("t0:");
+
+       t1.show("t1:");
+
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
 
 @q ** (2) @>
 @
 @<|main| definition@>=
 
 
+@q ** (2) @>
+@
+@<|main| definition@>=
 
 #if DEBUG_COMPILE
    if (DEBUG)
@@ -142,11 +296,139 @@ main(int argc, char *argv[])
    }  /* |if (DEBUG)|  */
 #endif  /* |DEBUG_COMPILE|  */ 
 
-   pthread_exit(0);
+   exit(0);
 
 
 
 }  /* End of |main| definition  */
+
+
+@q * (1) Finish (|finish|).  @>
+
+@ Finish (|finish|).  
+\initials{LDF 2014.06.13.}
+
+This function is registered using |atexit|.
+\initials{LDF 2014.06.13.}
+
+@q ** (2) Declaration @>
+
+@<|finish| declaration@>=
+void
+finish(void);
+
+@q ** (2) Definition  @>
+@
+@<|finish| definition@>=
+void
+finish(void)
+{
+   int status = 0;
+
+   bool DEBUG = true; /* |false|  */
+
+   set_debug_level(DEBUG);
+
+@q *** (3) Destroy mutexes.  @>
+
+@ Destroy mutexes.
+\initials{LDF 2014.06.13.}
+
+@q **** (4) |cerr_mutex|. @>
+
+@ |cerr_mutex|.
+\initials{LDF 2014.06.13.}
+
+@<|finish| definition@>=
+
+@q ***** (5) @>
+
+   status = pthread_mutex_destroy(&cout_mutex);
+
+   if (status != 0)
+   {
+       cerr << "[Thread 0] ERROR!  In `finish':  `pthread_mutex_destroy' "
+            << "failed, returning " << status << ":"
+            << endl
+            << strerror(status)
+            << endl
+            << "Failed to destroy `cout_mutex'."
+            << endl 
+            << "Exiting `3dldf' unsuccessfully with exit status 1."
+            << endl;
+
+       exit(1);
+
+   }  /* |if (status != 0)|  */
+
+@q ***** (5) @>
+
+#if DEBUG_COMPILE
+   else if (DEBUG)
+   {
+       cerr << "[Thread 0] In `finish':  `pthread_mutex_destroy' "
+            << "succeeded, returning 0."
+            << endl
+            << "Destroyed `cout_mutex' successfully."
+            << endl;
+
+   }  /* |else if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+@q ***** (5) @>
+
+@q **** (4) |cerr_mutex|. @>
+
+@ |cerr_mutex|.
+\initials{LDF 2014.06.13.}
+
+@<|finish| definition@>=
+
+@q ***** (5) @>
+
+   status = pthread_mutex_destroy(&cerr_mutex);
+
+   if (status != 0)
+   {
+       cerr << "[Thread 0] ERROR!  In `finish':  `pthread_mutex_destroy' "
+            << "failed, returning " << status << ":"
+            << endl
+            << strerror(status)
+            << endl
+            << "Failed to destroy `cerr_mutex'."
+            << endl 
+            << "Exiting `3dldf' unsuccessfully with exit status 1."
+            << endl;
+
+       exit(1);
+
+   }  /* |if (status != 0)|  */
+
+@q ***** (5) @>
+
+#if DEBUG_COMPILE
+   else if (DEBUG)
+   {
+       cerr << "[Thread 0] In `finish':  `pthread_mutex_destroy' "
+            << "succeeded, returning 0."
+            << endl
+            << "Destroyed `cerr_mutex' successfully."
+            << endl;
+
+   }  /* |else if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+   return;  
+
+@q ***** (5) @>
+
+@q **** (4) @>
+
+@q *** (3) @>
+
+   return;
+
+}  /* End of |finish| definition  */
+
 
 @q * (1) Putting |main| together.  @>
 @ Putting |main| together.  
@@ -161,7 +443,9 @@ main(int argc, char *argv[])
 @<Include files@>@;@/
 using namespace std;
 using namespace tdldf;
+@<|finish| declaration@>@;@/
 @<|main| definition@>@;@/
+@<|finish| definition@>@;@/
 
 @q ** (2) @>
 

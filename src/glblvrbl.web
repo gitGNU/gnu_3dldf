@@ -26,6 +26,8 @@ Added this file.
 #include <config.h>
 #endif
 
+#include <pthread.h>
+
 #include "glblcnst.h++"
 
 @q * (1) Global variables.  @>
@@ -79,7 +81,7 @@ namespace tdldf
 @ This is what's written to the header file.  
 \initials{LDF 2014.06.12.}
 
-@(glblcnst.h@>=
+@(glblvrbl.h@>=
 
 #ifndef GLBLVRBL_H
 #define GLBLVRBL_H 1

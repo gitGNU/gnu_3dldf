@@ -69,8 +69,27 @@ bin_PROGRAMS = dummy$(EXEEXT) prbsnflx$(EXEEXT) 3dldf$(EXEEXT)
 
 dummy_SOURCES = dummy.cxx
 
-3dldf_SOURCES = glblcnst.web main.web transfor.web utility.web
+lib_LTLIBRARIES = lib3dldflb.la 
 
+3dldflb_CWEB_files = glblcnst.web transfor.web utility.web
+
+3dldflb_c_files = $(3dldflb_CWEB_files:.web=.c)
+3dldflb_cpp_files = $(3dldflb_CWEB_files:.web=.c++) 
+3dldflb_h_files = $(3dldflb_CWEB_files:.web=.h) 
+3dldflb_hpp_files = $(3dldflb_CWEB_files:.web=.h++) 
+3dldflb_lo_files = $(3dldflb_CWEB_files:.web=.lo)
+3dldflb_obj_files = $(3dldflb_CWEB_files:.web=.o)
+
+3dldf_SOURCES = glblvrbl.web main.web 
+
+3dldf_cpp_files = $(3dldf_SOURCES:.web=.c++)
+3dldf_c_files = $(3dldf_SOURCES:.web=.c)
+3dldf_hpp_files = $(3dldf_SOURCES:.web=.h++) 
+3dldf_h_files = $(3dldf_SOURCES:.web=.h)
+3dldf_rpo_files = $(3dldf_SOURCES:.web=.rpo)
+3dldf_obj_files = $(3dldf_SOURCES:.web=.o) 
+
+3dldf_LDADD = lib3dldflb.la
 
 #### AM_CPPFLAGS = -O0 ## This does not work, since '-02' is added
 ####                   ## to 'CXXCOMPILE'
@@ -78,6 +97,13 @@ dummy_SOURCES = dummy.cxx
 ####                   ## LDF 2014.06.12.
 
 AM_LDFLAGS = -pthread
+
+lib3dldflb.c:
+	touch $@
+
+dist-hook:
+	rm ./lib3dldflb.c 
+
 
 # 3dldf$(EXEEXT) 
 
@@ -154,8 +180,8 @@ AM_LDFLAGS = -pthread
 #### ** (2) Implicit rule for compiling C++ files. 
 ####        LDF 2014.06.12.
 
-%.o: %.c++
-	$(CXXCOMPILE) -o $@ -O0 -c $<
+%.o %.lo: %.c++
+	libtool --mode=compile $(CXXCOMPILE) -O0 -c -o $@ $<
 
 #### *** (3) prbsnflx
 
@@ -178,26 +204,41 @@ prbsnflx.c++: prbsnflx.l++
 
 glblcnst.o: glblcnst.c++ glblcnst.h++ 
 
+#### glblvrbl.web
+
+glblvrbl.o: glblvrbl.c++ glblvrbl.h++ glblcnst.h++
+
 #### main.web
 
-main.o: main.c++ main.h++ transfor.h++ utility.h++
+main.o: main.c++ main.h++ glblcnst.h++ glblvrbl.h++ transfor.h++ utility.h++
 
 
 #### transfor.web
 
-transfor.o: transfor.c++ transfor.h++ glblcnst.h++
+transfor.o: transfor.c++ transfor.h++ glblcnst.h++ glblvrbl.h++
 
 #### utility.web
 
-utility.o: utility.c++ utility.h++ glblcnst.h++
+utility.o: utility.c++ utility.h++ glblcnst.h++ glblvrbl.h++
 	$(CXXCOMPILE) -o $@ -O0 -c $<
 
 
+lib3dldflb.la: $(3dldflb_hpp_files) $(3dldf_hpp_files) $(3dldflb_lo_files) 
+	$(CXXLINK) -rpath $(libdir) $(3dldflb_lo_files) $(LIBS)
+
 #### Link 3dldf
 
-3dldf$(EXEEXT): glblcnst.o main.o transfor.o utility.o
-	$(CXXLINK) -O0 $^
+3dldf$(EXEEXT): $(3dldf_obj_files) $(3dldf_LDADD) 
+	@echo "Linking 3dldf"
+	$(CXXLINK) $(3dldf_obj_files) $(3dldf_LDADD) $(LIBS)
 
+
+
+#### * (1) prog
+
+.PHONY: prog
+
+prog: 3dldf$(EXEEXT)
 
 #### * (1) run
 
@@ -206,13 +247,13 @@ utility.o: utility.c++ utility.h++ glblcnst.h++
 run: 3dldf$(EXEEXT)
 	3dldf$(EXEEXT)
 
-
 #### * (1) purge
 
 .PHONY: purge
 
-purge: 
+purge: clean
 	rm -f glblcnst.c glblcnst.h glblcnst.c++ glblcnst.h++ glblcnst.o \
+              glblvrbl.c glblvrbl.h glblvrbl.c++ glblvrbl.h++ glblvrbl.o \
               transfor.c transfor.h transfor.c++ transfor.h++ transfor.o \
               utility.c utility.h utility.c++ utility.h++ utility.o \
               main.c main.h main.c++ main.h++ main.o \
@@ -224,9 +265,10 @@ purge:
 .PHONY: query
 
 query:
-	@echo "CXXCOMPILE == $(CXXCOMPILE)"
-	@echo "CXXLINK    == $(CXXLINK)"
-	@echo "LIBS       == $(LIBS)"
+	@echo "CXXCOMPILE  == $(CXXCOMPILE)"
+	@echo "CXXLINK     == $(CXXLINK)"
+	@echo "LIBS        == $(LIBS)"
+	@echo "3dldf_LDADD == $(3dldf_LDADD)"
 
 # @echo "3dldflb_c_files == $(3dldflb_c_files)"
 # @echo "3dldflb_cpp_files == $(3dldflb_cpp_files)"
