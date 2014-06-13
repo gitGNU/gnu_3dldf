@@ -87,6 +87,7 @@
 #include "glblcnst.h++"
 #include "glblvrbl.h++"
 #include "utility.h++"
+#include "cmdlnopt.h++"
 #include "transfor.h++"
 
 @q * (1) main function.  @>
@@ -256,6 +257,48 @@ is registered.
 
    }  /* |else if (DEBUG)|  */
 #endif  /* |DEBUG_COMPILE|  */ 
+
+@q ** (2) Process command-line options.  @>
+
+@ Process command-line options.  
+\initials{LDF 2014.06.13.}
+
+\LOG
+\initials{LDF 2014.06.13.}
+Added this section.
+\ENDLOG
+
+@<|main| definition@>=
+
+@q *** (3) @>
+
+   status = process_command_line_options(argc, argv);
+
+   if (status != 0)
+   {
+       cerr << "[Thread 0] ERROR!  In `main':  `process_command_line_options' "
+            << "failed, returning " << status << ":"
+            << endl
+            << "Exiting `3dldf' unsuccessfully with exit status 1."
+            << endl;
+
+       exit(1);
+
+   }  /* |if (status != 0)|  */
+
+@q *** (3) @>
+
+#if DEBUG_COMPILE
+   else if (DEBUG)
+   {
+       cerr << "[Thread 0] In `main':  `process_command_line_options' "
+            << "succeeded, returning 0."
+            << endl;
+
+   }  /* |else if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+@q *** (3) @>
 
 @q ** (2) @>
 @

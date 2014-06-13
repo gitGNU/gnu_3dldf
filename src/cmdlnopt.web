@@ -1,4 +1,4 @@
-@q cmdlnopt.web                                                      
+@q cmdlnopt.web                                                      @>
 @q Created by Laurence D. Finston (LDF) Fr 13 Jun 2014 15:04:06 CEST @>
 
 @q * (0) Copyright and License.@>
@@ -90,9 +90,253 @@ Added this file.
 
 #include <pthread.h>   
 
+#include <getopt.h> 
+
 #include "glblcnst.h++"
 #include "glblvrbl.h++"
 #include "utility.h++"
+
+@q ** (2) Process  command-line options (|process_command_line_options|).  @>
+
+@ Process  command-line options (|process_command_line_options|).
+\initials{LDF 2014.06.13.}
+
+\LOG
+\initials{LDF 2014.06.13.}
+Added this function.
+\ENDLOG
+
+@q *** (3) Declaration  @>
+
+@<|process_command_line_options| declaration@>=
+int 
+process_command_line_options(int argc, char *argv[]);
+
+@q *** (3) Definition @>
+@
+@<|process_command_line_options| definition@>=
+int 
+process_command_line_options(int argc, char *argv[])
+{
+@q **** (4) @>
+
+   bool DEBUG = true; /* |false| */ 
+
+   set_debug_level(DEBUG);
+
+   int option_ctr   = 0;
+   int digit_optind = 0;
+
+   int option_index = 0;
+ 
+   int status = 0;
+
+
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+      cerr << "[Thread 0] Entering `process_command_line_options'."
+           << endl;
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */  
+
+
+@*2 Index constants.
+
+
+@q **** (4) Index constants.  @>
+
+@ Index constants.
+\initials{LDF 2014.06.13.}
+
+@<|process_command_line_options| definition@>=
+
+  const unsigned short VERSION_INDEX              = 0;
+  const unsigned short HELP_INDEX                 = 1;
+
+@q *** Option struct.@>
+@
+@<|process_command_line_options| definition@>=
+
+  static struct option long_options[] = 
+  {
+     {"version", 0, 0, 0},
+     {"help", 0, 0, 0},
+     {0, 0, 0, 0}
+  };
+
+@q **** (4) @>
+@
+@<|process_command_line_options| definition@>=
+
+  while (1) 
+  {
+@q ***** (5) @>
+
+      option_ctr = getopt_long_only (argc, argv, "",
+                                     long_options, 
+                                     &option_index);
+  
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+        cerr << "`option_ctr'   == " << option_ctr << endl
+             << "`option_index' == " << option_index 
+             << endl;
+
+        if (optarg)
+          cerr << "`optarg' == " << optarg << endl;
+        else
+          cerr << "No `optarg'." << endl;
+
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+@q ***** (5) @>
+
+      if (option_ctr == -1)
+      {
+#if DEBUG_COMPILE
+        if (DEBUG)
+        {
+            cerr << "[Thread 0] In `process_command_line_options':"
+                 << endl 
+                 << "No more option arguments.  Breaking." 
+                 << endl;
+
+        }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+        break;
+
+
+      }
+
+@q ***** (5) @>
+
+      else if (option_ctr == 0)
+      {
+
+
+@q ****** (6) version.@>
+@ version.
+\initials{LDF 2014.06.13.}
+
+@<|process_command_line_options| definition@>=
+
+        if (option_index == VERSION_INDEX)
+        {
+
+            cout << "GNU 3DLDF 3.0.1" 
+                 << endl 
+                 << "Copyright (C) 2014 The Free Software Foundation"
+                 << endl
+                 << "Author:  Laurence D. Finston"
+                 << endl 
+                 << "GNU 3DLDF comes with ABSOLUTELY NO WARRANTY;"
+                 << "for details see the file COPYING," << endl
+                 << "which you should have received" << endl
+                 << "in the distribution of GNU 3DLDF 2.0.3" << endl
+                 << "This is Free Software, and you are welcome" << endl
+                 << "to redistribute it under certain conditions;" << endl
+                 << "for details, again, see the file COPYING." << endl
+                 << "Please send bug reports to Laurence.Finston@@gmx.de" << endl
+                 << "Web site:  http://www.gnu.org/software/3dldf/LDF.html"
+                 << endl;
+
+            exit(0);
+
+        }  /* |if (option_index == VERSION_INDEX)|  */
+  
+
+@q ****** (6) help.@>
+@ help.
+\initials{LDF 2014.06.13.}
+
+@<|process_command_line_options| definition@>=
+
+        else if (option_index == HELP_INDEX)
+        {
+
+            cerr << "GNU 3DLDF 3.0.1 " 
+                 << endl 
+                 << "Copyright (C) 2014 The Free Software Foundation"
+                 << endl
+                 << "Author:  Laurence D. Finston"
+                 << endl 
+                 << "GNU 3DLDF comes with ABSOLUTELY NO WARRANTY;"
+                 << "for details see the file COPYING," << endl
+                 << "which you should have received" << endl
+                 << "in the distribution of GNU 3DLDF 2.0.3" << endl
+                 << "This is Free Software, and you are welcome" << endl
+                 << "to redistribute it under certain conditions;" << endl
+                 << "for details, again, see the file COPYING." << endl
+                 << "Please send bug reports to Laurence.Finston@@gmx.de" << endl
+                 << "Web site:  http://www.gnu.org/software/3dldf/LDF.html"
+                 << endl
+                 << endl
+                 << "Valid options for GNU 3DLDF 3.0.1 are:" << endl
+                 << endl
+                 << "--help:                  Prints this message and exits "
+                 << "with exit status 0." << endl
+                 << "--version:               Prints the version number of "
+                 << "GNU 3DLDF "
+                 << endl 
+                 << "                         (i.e., 3.0.1) to standard output "
+                 << "and exits with exit status 0."
+                 << endl;
+
+            exit(0);
+ 
+        }  /* |else if (option_index == HELP_INDEX)|  */
+
+
+@q ****** (6) @>
+
+      }  /* |else if (option_ctr == 0)|  */
+
+@q ***** (5) @>
+
+      else if (option_ctr == '?')
+      {
+        cerr << "getopt_long() returned ambiguous match. Breaking."
+             << endl << endl << flush;
+        break;
+      }
+
+@q ***** (5) @>
+
+    else
+    {
+       cerr << "getopt_long() returned invalid option."
+            << endl << flush;
+    }
+
+@q ***** (5) @>
+
+  } /* |while|  */
+
+
+@q **** (4) @>
+@
+@<|process_command_line_options| definition@>=
+
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+      cerr << "[Thread 0] Exiting `process_command_line_options' successfully "
+           << "with return value 0."
+           << endl;
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */  
+
+   return 0;
+
+}  /* End of |process_command_line_options| definition  */
+
 
 @q * Putting command-line option processing together. @>
 @ Putting command-line option processing together.
@@ -104,10 +348,14 @@ Added this file.
 using namespace std;
 using namespace tdldf;
 
+@<|process_command_line_options| declaration@>@;@/
+@<|process_command_line_options| definition@>@;@/
+
 @ This is what's written to \filename{cmdlnopt.h}.
 @(cmdlnopt.h@>=
 #ifndef CMDLNOPT_H_KNOWN
 #define CMDLNOPT_H_KNOWN
+@<|process_command_line_options| declaration@>@;@/
 #endif
 
 
