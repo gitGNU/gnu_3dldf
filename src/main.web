@@ -89,6 +89,7 @@
 #include "utility.h++"
 #include "cmdlnopt.h++"
 #include "transfor.h++"
+#include "points.h++"
 
 @q * (1) main function.  @>
 @ |main| function.  
@@ -100,7 +101,7 @@ main(int argc, char *argv[])
 {
 @q ** (2) @>
 
-   bool DEBUG = true;
+   bool DEBUG = true;  /* |false| */
 
    int status = 0;
 
@@ -305,7 +306,7 @@ Added this section.
 @<|main| definition@>=
 
 /* !! START HERE:  Testing.  LDF 2014.06.12. */
-
+#if 0 
    Transform<float>     t0;
    Transform<double, 1> t1; 
 
@@ -320,6 +321,15 @@ Added this section.
 
    }  /* |if (DEBUG)|  */
 #endif  /* |DEBUG_COMPILE|  */ 
+#endif 
+
+
+@q ** (2) @>
+@
+@<|main| definition@>=
+
+   Point<float> p0;
+
 
 @q ** (2) @>
 @

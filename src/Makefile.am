@@ -71,7 +71,8 @@ dummy_SOURCES = dummy.cxx
 
 lib_LTLIBRARIES = lib3dldflb.la 
 
-3dldflb_CWEB_files = cmdlnopt.web glblcnst.web transfor.web utility.web
+3dldflb_CWEB_files = cmdlnopt.web glblcnst.web points.web \
+                     transfor.web utility.web
 
 3dldflb_c_files = $(3dldflb_CWEB_files:.web=.c)
 3dldflb_cpp_files = $(3dldflb_CWEB_files:.web=.c++) 
@@ -215,11 +216,19 @@ glblvrbl.o: glblvrbl.c++ glblvrbl.h++ glblcnst.h++
 
 #### main.web
 
-main.o: main.c++ main.h++ cmdlnopt.h++ glblcnst.h++ glblvrbl.h++ transfor.h++ utility.h++
+main.o: main.c++ main.h++ cmdlnopt.h++ glblcnst.h++ glblvrbl.h++ \
+                          points.h++ \
+                          transfor.h++ utility.h++
+
+#### points.web
+
+points.o: points.c++ points.h++ glblcnst.h++ glblvrbl.h++ transfor.h++ \
+                                utility.h++
 
 #### transfor.web
 
-transfor.o: transfor.c++ transfor.h++ glblcnst.h++ glblvrbl.h++
+transfor.o: transfor.c++ transfor.h++ glblcnst.h++ glblvrbl.h++ \
+                                      utility.h++
 
 #### utility.web
 

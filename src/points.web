@@ -52,6 +52,64 @@
 @q * (0) class Point.@>
 @** {\bf class Point}\quad ({\tt points\PERIOD web}).\hfil
 
+@q * Include files. @>
+
+@ Include files.
+\initials{LDF 2014.06.14.}
+
+@<Include files@>=
+
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif 
+
+#define _GNU_SOURCE
+
+#include <stdlib.h>
+#include <stdio.h>   
+#include <string.h>
+#include <errno.h>
+#include <math.h>
+#include <float.h>  
+#include <limits.h>
+
+#include <string> 
+#include <fstream>
+#include <iomanip>
+#include <ios>
+#include <iostream>
+#include <sstream>   
+
+#include <limits>     
+
+#include <pthread.h>   
+
+#include "glblcnst.h++"
+#include "glblvrbl.h++"
+#include "utility.h++"
+#include "transfor.h++"
+
+@q * (1) |class Point|.  @>
+
+@ |class Point|.
+\initials{LDF 2014.06.14.}
+
+@<Declare |class Point|@>=
+
+template <class C, unsigned int T = 0> class Point
+{
+
+#if 0
+/* !! START HERE: LDF 2014.06.14.   */
+   valarray<class C> world_coordinates;
+   valarray<class C> projective_coordinates;
+#endif 
+
+   Transform<C, T> transform;
+
+};
+
+
 @q * (1) Putting Point together.@>
 @* Putting {\bf Point}  together.
 

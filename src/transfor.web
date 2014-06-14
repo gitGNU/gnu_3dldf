@@ -96,6 +96,8 @@ versions are now in their own RCS repository.
 #include <pthread.h>   
 
 #include "glblcnst.h++"
+#include "glblvrbl.h++"
+#include "utility.h++"
 
 @q * {\bf Transform} class definition.@>
 @* {\bf Transform} class definition.@>
@@ -107,6 +109,12 @@ versions are now in their own RCS repository.
 
 template <class C, unsigned int T = 0> class Transform
 {
+
+#if 0 
+/* !! START HERE:  LDF 2014.06.14.  */
+  friend template class Point<C, T>;
+#endif 
+
   C transform_matrix[4][4];
 
   int type;
