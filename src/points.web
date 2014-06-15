@@ -80,6 +80,10 @@
 #include <iostream>
 #include <sstream>   
 
+#include <valarray>   
+
+
+
 #include <limits>     
 
 #include <pthread.h>   
@@ -102,8 +106,8 @@ template <class C, unsigned int T = 0> class Point
    int type;
    string type_name; 
 
-   C world_coordinates[4];
-   C projective_coordinates[4];
+   valarray<C> world_coordinates;
+   valarray<C> projective_coordinates;
 
    Transform<C, T> transform;
 
@@ -191,18 +195,13 @@ Point<C,T>::Point(void)
 @
 @<|Point| constructor definitions@>=
 
-   for (int i = 0; i < 4; ++i)
-   {
-       world_coordinates[i] = projective_coordinates[i] = static_cast<C>(0);
 
-   }  /* |for|  */
-
+   world_coordinates.resize(4, static_cast<C>(0));
+   projective_coordinates.resize(4, static_cast<C>(0));
 
 @q ****** (6) @>
 @
 @<|Point| constructor definitions@>=
-
-
 
 #if DEBUG_COMPILE
    if (DEBUG)

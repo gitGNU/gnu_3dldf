@@ -1,58 +1,6 @@
-@q *** (3) Show (|show|).  @>
-@ Show (|show|).
-\initials{LDF 2014.06.15.}
-
-\LOG
-\initials{LDF 2014.06.15.}
-Added this function.
-\ENDLOG
-
-@q **** (4) Declaration  @>
-
-@<Declare |Point| functions@>=
-
-int
-show(string s = "Point:");
-
-@q **** (4) Definition  @>
-@
-@<|Point::show| definition@>=
-
-template <class C, unsigned int T>
-int
-Point<C,T>::show(string s)
-{
-@q ***** (5) @>
-
-    bool DEBUG = true;  /* |false|  */
-    set_debug_level(DEBUG, 0, 0); 
-
-#if DEBUG_COMPILE
-   if (DEBUG)
-   {
-       lock_cerr_mutex(); 
-       cerr << "Entering `Point::show'."
-            << endl;
-       unlock_cerr_mutex(); 
-
-   }  /* |if (DEBUG)|  */
-#endif  /* |DEBUG_COMPILE|  */ 
-
-@q ***** (5) @>
-@
-@<|Point::show| definition@>=
-
-#if DEBUG_COMPILE
-   if (DEBUG)
-   {
-       lock_cerr_mutex(); 
-       cerr << "Exiting `Point::show' successfully with return value 0."
-            << endl;
-       unlock_cerr_mutex(); 
-
-   }  /* |if (DEBUG)|  */
-#endif  /* |DEBUG_COMPILE|  */ 
-
-@q ****** (6) @>
-
-}  /* |End| of |Point::show| definition  */
+%defines
+%debug
+%pure_parser
+%parse-param {yyscan_t parameter}
+%lex-param {yyscan_t parameter}
+%verbose

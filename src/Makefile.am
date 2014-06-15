@@ -4,7 +4,7 @@
 #### * Copyright and License.
 
 #### This file is part of GNU 3DLDF, a package for three-dimensional drawing. 
-#### Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 The Free Software Foundation
+#### Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 The Free Software Foundation
 
 #### GNU 3DLDF is free software; you can redistribute it and/or modify 
 #### it under the terms of the GNU General Public License as published by 
@@ -71,7 +71,7 @@ dummy_SOURCES = dummy.cxx
 
 lib_LTLIBRARIES = lib3dldflb.la 
 
-3dldflb_CWEB_files = cmdlnopt.web glblcnst.web points.web \
+3dldflb_CWEB_files = cmdlnopt.web glblcnst.web parser.web points.web \
                      transfor.web utility.web
 
 3dldflb_c_files = $(3dldflb_CWEB_files:.web=.c)
@@ -217,8 +217,9 @@ glblvrbl.o: glblvrbl.c++ glblvrbl.h++ glblcnst.h++
 #### main.web
 
 main.o: main.c++ main.h++ cmdlnopt.h++ glblcnst.h++ glblvrbl.h++ \
-                          points.h++ \
+                          parser.h++ points.h++ \
                           transfor.h++ utility.h++
+
 
 #### points.web
 
@@ -239,6 +240,32 @@ utility.o: utility.c++ utility.h++ glblcnst.h++ glblvrbl.h++
 lib3dldflb.la: $(3dldflb_hpp_files) $(3dldf_hpp_files) $(3dldflb_lo_files) 
 	$(CXXLINK) -rpath $(libdir) $(3dldflb_lo_files) $(LIBS)
 
+#### parser.web 
+
+parser.y++: parser.web
+	ctangle parser.web
+	mv parser.c parser.y++
+
+parser.c++ parser.h++: parser.y++
+	bison parser.y++ -o parser.c++
+
+parser.o: parser.c++ parser.h++
+	$(CXXCOMPILE) -o $@ -O0 -c $<
+
+#### scanner.web 
+
+scanner.l++: scanner.web
+	ctangle scanner.web
+	mv scanner.c scanner.l++
+
+scanner.c++: scanner.l++
+	flex -oscanner.c++ scanner.l++ 
+
+scanner.o: scanner.c++ parser.h++
+	$(CXXCOMPILE) -o $@ -O0 -c $<
+
+
+
 #### Link 3dldf
 
 3dldf$(EXEEXT): $(3dldf_obj_files) $(3dldf_LDADD) 
@@ -258,7 +285,7 @@ prog: 3dldf$(EXEEXT)
 .PHONY: run
 
 run: 3dldf$(EXEEXT)
-	3dldf$(EXEEXT)
+	./3dldf$(EXEEXT)
 
 #### * (1) purge
 
@@ -282,6 +309,11 @@ query:
 	@echo "CXXLINK     == $(CXXLINK)"
 	@echo "LIBS        == $(LIBS)"
 	@echo "3dldf_LDADD == $(3dldf_LDADD)"
+	@echo "BISON == $(BISON)"
+	@echo "bison == $(bison)"
+	@echo "yacc == $(YACC)"
+	@echo "YACC == $(YACC)"
+	@echo "yacc == $(yacc)"
 
 # @echo "3dldflb_c_files == $(3dldflb_c_files)"
 # @echo "3dldflb_cpp_files == $(3dldflb_cpp_files)"

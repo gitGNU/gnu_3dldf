@@ -81,6 +81,7 @@
 #include <sstream>   
 #include <string> 
 #include <limits>     
+#include <valarray>     
 
 #include <pthread.h>   
 
@@ -90,6 +91,11 @@
 #include "cmdlnopt.h++"
 #include "transfor.h++"
 #include "points.h++"
+
+typedef void* yyscan_t;
+
+#include "parser.h++"
+
 
 @q * (1) main function.  @>
 @ |main| function.  
@@ -337,6 +343,24 @@ Added this section.
 @
 @<|main| definition@>=
 
+   yyscan_t parameter;
+
+#if 0 
+
+/* !! START HERE:    LDF 2014.06.15.  This requires a more recent flex.  */
+
+   yylex_init(&parameter);
+
+   int param;
+
+
+   yyset_extra(&param, parameter);
+
+   YY_BUFFER_STATE yy_buffer_state;
+
+#endif 
+
+
 
 @q ** (2) @>
 @
@@ -495,9 +519,11 @@ finish(void)
 \initials{LDF 2014.06.12.}
 
 @c
+
 @<Include files@>@;@/
 using namespace std;
 using namespace tdldf;
+
 @<|finish| declaration@>@;@/
 @<|main| definition@>@;@/
 @<|finish| definition@>@;@/
