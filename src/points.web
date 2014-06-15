@@ -99,15 +99,239 @@
 template <class C, unsigned int T = 0> class Point
 {
 
-#if 0
-/* !! START HERE: LDF 2014.06.14.   */
-   valarray<class C> world_coordinates;
-   valarray<class C> projective_coordinates;
-#endif 
+   int type;
+   string type_name; 
+
+   C world_coordinates[4];
+   C projective_coordinates[4];
 
    Transform<C, T> transform;
 
+   public:
+
+   @<Declare |Point| functions@>@;@/
+
 };
+
+@q ** (2) |Point| function definitions.  @>
+@ |Point| function definitions.  
+\initials{LDF 2014.06.15.}
+
+\LOG
+\initials{LDF 2014.06.15.}
+Added this section.
+\ENDLOG
+
+@q *** (3) Constructors.  @>
+
+@ Constructors.  
+\initials{LDF 2014.06.15.}
+
+\LOG
+\initials{LDF 2014.06.15.}
+Added this section.
+\ENDLOG
+
+@q **** (4) Default constructor.  @>
+@ Default constructor.
+\initials{LDF 2014.06.15.}
+
+\LOG
+\initials{LDF 2014.06.15.}
+Added this function.
+\ENDLOG
+
+@q ***** (5) Declaration  @>
+
+@<Declare |Point| functions@>=
+
+Point(void);
+
+@q ***** (5) Definition  @>
+@
+@<|Point| constructor definitions@>=
+
+template <class C, unsigned int T>
+Point<C,T>::Point(void)
+{
+@q ****** (6) @>
+
+    bool DEBUG = false;  /* |true|  */
+    set_debug_level(DEBUG, 0, 0); 
+
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+       lock_cerr_mutex(); 
+       cerr << "Entering `Point' default constructor."
+            << endl;
+       unlock_cerr_mutex(); 
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+@q ****** (6) @>
+@
+@<|Point| constructor definitions@>=
+
+   type = T;
+
+   if (type == 0)
+      type_name = "float";
+   else if (type == 1)
+      type_name = "double";
+   else if (type == 2)
+      type_name = "long double";
+  else if (type == 3)
+     type_name = "complex";
+   else 
+      type_name = "unknown type";
+
+@q ****** (6) @>
+@
+@<|Point| constructor definitions@>=
+
+   for (int i = 0; i < 4; ++i)
+   {
+       world_coordinates[i] = projective_coordinates[i] = static_cast<C>(0);
+
+   }  /* |for|  */
+
+
+@q ****** (6) @>
+@
+@<|Point| constructor definitions@>=
+
+
+
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+       lock_cerr_mutex(); 
+       cerr << "Exiting `Point' default constructor successfully "
+            << "with `void' return value."
+            << endl;
+       unlock_cerr_mutex(); 
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+@q ****** (6) @>
+
+}  /* |End| of |Point| default constructor definition  */
+
+@q ***** (5) @>
+
+@q **** (4) @>
+
+@q *** (3) Show (|show|).  @>
+@ Show (|show|).
+\initials{LDF 2014.06.15.}
+
+\LOG
+\initials{LDF 2014.06.15.}
+Added this function.
+\ENDLOG
+
+@q **** (4) Declaration  @>
+
+@<Declare |Point| functions@>=
+
+int
+show(string s = "Point:");
+
+@q **** (4) Definition  @>
+@
+@<|Point::show| definition@>=
+
+template <class C, unsigned int T>
+int
+Point<C,T>::show(string s)
+{
+@q ***** (5) @>
+
+    bool DEBUG = true;  /* |false|  */
+    set_debug_level(DEBUG, 0, 0); 
+
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+       lock_cerr_mutex(); 
+       cerr << "Entering `Point::show'."
+            << endl;
+       unlock_cerr_mutex(); 
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+@q ***** (5) @>
+@
+@<|Point::show| definition@>=
+
+   cerr << s << endl
+        << "type:       " << type
+        << endl 
+        << "type_name:  " << type_name
+        << endl
+        << "world_coordinates:"
+        << endl
+        << "(";
+
+   for (int i = 0; i < 4; ++i)
+   {
+       cerr << world_coordinates[i];
+
+       if (i < 3)
+          cerr << ", ";
+
+   }  /* |for|  */
+      
+   cerr << ")" << endl;
+
+   cerr << "projective_coordinates:"
+        << endl
+        << "(";
+
+   for (int i = 0; i < 4; ++i)
+   {
+       cerr << projective_coordinates[i];
+
+       if (i < 3)
+          cerr << ", ";
+
+   }  /* |for|  */
+      
+   cerr << ")" << endl;
+
+@q ***** (5) @>
+@
+@<|Point::show| definition@>=
+
+   cerr << "transform:"
+        << endl;
+
+   transform.show("transform:");
+
+@q ***** (5) @>
+@
+@<|Point::show| definition@>=
+
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+       lock_cerr_mutex(); 
+       cerr << "Exiting `Point::show' successfully with return value 0."
+            << endl;
+       unlock_cerr_mutex(); 
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+@q ****** (6) @>
+
+}  /* |End| of |Point::show| definition  */
+
+
 
 
 @q * (1) Putting Point together.@>
@@ -120,6 +344,8 @@ template <class C, unsigned int T = 0> class Point
 @c
 @<Include files@>@;
 @<Declare |class Point|@>@;
+@<|Point| constructor definitions@>@;@/
+@<|Point::show| definition@>@;@/
 
 @q **  This is what's written to \filename{points.h}. @>
 @ This is what's written to \filename{points.h}. 
@@ -128,7 +354,8 @@ template <class C, unsigned int T = 0> class Point
 @(points.h@>=
 
 @<Declare |class Point|@>@;
-
+@<|Point| constructor definitions@>@;@/
+@<|Point::show| definition@>@;@/
  
 
 @q * Emacs-Lisp code for use in indirect buffers                      @>

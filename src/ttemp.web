@@ -1,49 +1,58 @@
-@q ****** (6) float.@>
-@ float.
-\initials{LDF 2014.06.13.}
+@q *** (3) Show (|show|).  @>
+@ Show (|show|).
+\initials{LDF 2014.06.15.}
 
-@<|process_command_line_options| definition@>=
+\LOG
+\initials{LDF 2014.06.15.}
+Added this function.
+\ENDLOG
 
-        if (option_index == FLOAT_INDEX)
-        {
+@q **** (4) Declaration  @>
+
+@<Declare |Point| functions@>=
+
+int
+show(string s = "Point:");
+
+@q **** (4) Definition  @>
+@
+@<|Point::show| definition@>=
+
+template <class C, unsigned int T>
+int
+Point<C,T>::show(string s)
+{
+@q ***** (5) @>
+
+    bool DEBUG = true;  /* |false|  */
+    set_debug_level(DEBUG, 0, 0); 
+
 #if DEBUG_COMPILE
-           if (DEBUG)
-           {
-              cerr << "[Thread 0] In `process_command_line_options':"
-                   << endl
-                   << "`--float' option."
-                   << endl 
-                   << "Will declare `Transforms' and `Points' with "
-                   << "`float' values per default".
-                   << endl;
+   if (DEBUG)
+   {
+       lock_cerr_mutex(); 
+       cerr << "Entering `Point::show'."
+            << endl;
+       unlock_cerr_mutex(); 
 
-           }  /* |if (DEBUG)|  */
+   }  /* |if (DEBUG)|  */
 #endif  /* |DEBUG_COMPILE|  */ 
 
-        }  /* |if (option_index == FLOAT_INDEX)|  */
-  
-@q ****** (6) double.@>
-@ double.
-\initials{LDF 2014.06.13.}
+@q ***** (5) @>
+@
+@<|Point::show| definition@>=
 
-@<|process_command_line_options| definition@>=
-
-        if (option_index == DOUBLE_INDEX)
-        {
 #if DEBUG_COMPILE
-           if (DEBUG)
-           {
-              cerr << "[Thread 0] In `process_command_line_options':"
-                   << endl
-                   << "`--double' option."
-                   << endl 
-                   << "Will declare `Transforms' and `Points' with "
-                   << "`double' values per default".
-                   << endl;
+   if (DEBUG)
+   {
+       lock_cerr_mutex(); 
+       cerr << "Exiting `Point::show' successfully with return value 0."
+            << endl;
+       unlock_cerr_mutex(); 
 
-           }  /* |if (DEBUG)|  */
+   }  /* |if (DEBUG)|  */
 #endif  /* |DEBUG_COMPILE|  */ 
 
-        }  /* |if (option_index == DOUBLE_INDEX)|  */
-  
+@q ****** (6) @>
 
+}  /* |End| of |Point::show| definition  */
