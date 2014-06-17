@@ -71,15 +71,15 @@ dummy_SOURCES = dummy.cxx
 
 lib_LTLIBRARIES = lib3dldflb.la 
 
-3dldflb_CWEB_files = cmdlnopt.web glblcnst.web parser.web points.web \
-                     transfor.web utility.web
+3dldflb_CWEB_files = cmdlnopt.web glblcnst.web parser.w points.web \
+                     scanner.w transfor.web utility.web
 
-3dldflb_c_files = $(3dldflb_CWEB_files:.web=.c)
-3dldflb_cpp_files = $(3dldflb_CWEB_files:.web=.c++) 
-3dldflb_h_files = $(3dldflb_CWEB_files:.web=.h) 
-3dldflb_hpp_files = $(3dldflb_CWEB_files:.web=.h++) 
-3dldflb_lo_files = $(3dldflb_CWEB_files:.web=.lo)
-3dldflb_obj_files = $(3dldflb_CWEB_files:.web=.o)
+3dldflb_c_files = $(3dldflb_CWEB_files:.web=.c) parser.c scanner.c
+3dldflb_cpp_files = $(3dldflb_CWEB_files:.web=.c++) parser.c++ scanner.c++
+3dldflb_h_files = $(3dldflb_CWEB_files:.web=.h) parser.h       # scanner.h
+3dldflb_hpp_files = $(3dldflb_CWEB_files:.web=.h++) parser.h++ # scanner.h++
+3dldflb_lo_files = $(3dldflb_CWEB_files:.web=.lo) parser.lo scanner.lo 
+3dldflb_obj_files = $(3dldflb_CWEB_files:.web=.o) parser.o scanner.o 
 
 3dldf_SOURCES = glblvrbl.web main.web 
 
@@ -240,30 +240,29 @@ utility.o: utility.c++ utility.h++ glblcnst.h++ glblvrbl.h++
 lib3dldflb.la: $(3dldflb_hpp_files) $(3dldf_hpp_files) $(3dldflb_lo_files) 
 	$(CXXLINK) -rpath $(libdir) $(3dldflb_lo_files) $(LIBS)
 
-#### parser.web 
+#### parser.w 
 
-parser.y++: parser.web
-	ctangle parser.web
-	mv parser.c parser.y++
+parser.y++: parser.w prbsnflx$(EXEEXT)
+	ctangle parser.w - parser.cc
+	./prbsnflx$(EXEEXT) parser.cc parser.y++
 
-parser.c++ parser.h++: parser.y++
-	bison parser.y++ -o parser.c++
+parser.cxx parser.h++: parser.y++
+	bison parser.y++ -o parser.cxx
 
-parser.o: parser.c++ parser.h++
+parser.o: parser.cxx parser.h++
 	$(CXXCOMPILE) -o $@ -O0 -c $<
 
-#### scanner.web 
+#### scanner.w 
 
-scanner.l++: scanner.web
-	ctangle scanner.web
-	mv scanner.c scanner.l++
+scanner.l++: scanner.w prbsnflx$(EXEEXT)
+	ctangle scanner.w - scanner.cc
+	./prbsnflx$(EXEEXT) scanner.cc scanner.l++
 
-scanner.c++: scanner.l++
-	flex -oscanner.c++ scanner.l++ 
+scanner.cxx: scanner.l++
+	flex -oscanner.cxx scanner.l++ 
 
-scanner.o: scanner.c++ parser.h++
+scanner.o: scanner.cxx parser.h++
 	$(CXXCOMPILE) -o $@ -O0 -c $<
-
 
 
 #### Link 3dldf
@@ -294,6 +293,9 @@ run: 3dldf$(EXEEXT)
 purge: clean
 	rm -f glblcnst.c glblcnst.h glblcnst.c++ glblcnst.h++ glblcnst.o \
               glblvrbl.c glblvrbl.h glblvrbl.c++ glblvrbl.h++ glblvrbl.o \
+              parser.c parser.cc parser.cxx parser.c++ parser.h++ parser.y++ \
+              parser.output \
+              scanner.c scanner.cc scanner.cxx scanner.l++ \
               transfor.c transfor.h transfor.c++ transfor.h++ transfor.o \
               utility.c utility.h utility.c++ utility.h++ utility.o \
               main.c main.h main.c++ main.h++ main.o \

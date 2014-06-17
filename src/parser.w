@@ -1,4 +1,4 @@
-@q parser.web @> 
+@q parser.w @> 
 @q Created by Laurence Finston So 15 Jun 2014 16:36:52 CEST  @>
      
 @q * Copyright and License.@>
@@ -72,10 +72,10 @@
    typedef void* yyscan_t;
 @=%}@>
 
-@=%parse-param {yyscan_t parameter}@>
-@=%lex-param {yyscan_t parameter}@>
+@q =%parse-param {yyscan_t parameter}@>
+@q =%lex-param {yyscan_t parameter}@>
 @=%verbose@>
-@=%define api.pure full@>
+@q =%define api.pure full@>
 @=%defines "parser.h++"@>
 
 
@@ -91,6 +91,7 @@
 @=%token ABC_YY@>
 
 @=%{@>
+#if 0 
 int
 yylex(YYSTYPE* value,
       yyscan_t parameter);  
@@ -98,6 +99,18 @@ yylex(YYSTYPE* value,
 
 int
 yyerror(void *v, char const* message);
+
+
+#else
+int
+yylex(void);
+
+int
+yyerror(char const* message);
+
+#endif 
+
+
 
 @=%}@>
 

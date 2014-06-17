@@ -360,7 +360,42 @@ Added this section.
 
 #endif 
 
+   int param = 0;
 
+   FILE *fp = 0;
+
+   fp = fopen("test_input.txt", "r");
+
+   yyin = fp;
+
+   status = yyparse();
+
+   if (status != 0)
+   {
+      cerr << "[Thread 0] ERROR!  In `main':  `yyparse' failed, returning "
+           << status 
+           << endl
+           << "Exiting 3dldf unsuccessfully with exit status 1."
+           << endl;
+
+      fclose(fp);
+      fp = 0;
+
+      exit(1);
+
+   }  /* |if (status != 0)|  */
+
+#if DEBUG_COMPILE
+   else if (DEBUG)
+   {
+       cerr << "[Thread 0] `yyparse' succeeded, returning 0."
+            << endl;
+
+   }  /* |else if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+   fclose(fp);
+   fp = 0;
 
 @q ** (2) @>
 @
@@ -376,7 +411,6 @@ Added this section.
 #endif  /* |DEBUG_COMPILE|  */ 
 
    exit(0);
-
 
 
 }  /* End of |main| definition  */
@@ -523,6 +557,18 @@ finish(void)
 @<Include files@>@;@/
 using namespace std;
 using namespace tdldf;
+
+
+extern FILE *yyin;
+
+int
+yylex(void);
+
+int
+yywrap(void);
+
+int
+yyerror(void *v, char const *s);
 
 @<|finish| declaration@>@;@/
 @<|main| definition@>@;@/
