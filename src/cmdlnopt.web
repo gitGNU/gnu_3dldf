@@ -120,7 +120,7 @@ process_command_line_options(int argc, char *argv[])
 {
 @q **** (4) @>
 
-   bool DEBUG = false; /* |true| */ 
+   bool DEBUG = true; /* |false| */ 
 
    set_debug_level(DEBUG);
 
@@ -156,6 +156,7 @@ process_command_line_options(int argc, char *argv[])
   const unsigned short HELP_INDEX                 = 1;
   const unsigned short FLOAT_INDEX                = 2;
   const unsigned short DOUBLE_INDEX               = 3;
+  const unsigned short INPUT_FILENAME_INDEX       = 3;
 
 @q *** Option struct.@>
 @
@@ -167,6 +168,7 @@ process_command_line_options(int argc, char *argv[])
      {"help", 0, 0, 0},
      {"float", 0, 0, 0},
      {"double", 0, 0, 0},
+     {"input-filename", 1, 0, 0},
      {0, 0, 0, 0}
   };
 
@@ -342,10 +344,35 @@ process_command_line_options(int argc, char *argv[])
 #endif  /* |DEBUG_COMPILE|  */ 
 
         }  /* |if (option_index == DOUBLE_INDEX)|  */
+
+@q ****** (6) input-filename.  @>
+@ input-filename.
+\initials{LDF 2014.06.17.}
+
+@<|process_command_line_options| definition@>=
+
+        if (option_index == INPUT_FILENAME_INDEX)
+        {
+#if DEBUG_COMPILE
+           if (DEBUG)
+           {
+              cerr << "[Thread 0] In `process_command_line_options':"
+                   << endl
+                   << "`--input-filename' option."
+                   << endl 
+                   << "`optarg' == " << optarg
+                   << endl;
+
+           }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+        }  /* |if (option_index == INPUT_FILENAME_INDEX)|  */
+
   
 @q ****** (6) @>
 
       }  /* |else if (option_ctr == 0)|  */
+
 
 @q ***** (5) @>
 

@@ -284,7 +284,7 @@ prog: 3dldf$(EXEEXT)
 .PHONY: run
 
 run: 3dldf$(EXEEXT)
-	./3dldf$(EXEEXT)
+	./3dldf$(EXEEXT) --input-filename "test_input.txt"
 
 #### * (1) purge
 
