@@ -22,6 +22,9 @@ Added this file.
 #include <limits.h>
 #include <float.h>
 
+#include <string>   
+#include <vector>   
+
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -47,6 +50,8 @@ pthread_mutex_t log_strm_mutex;
 
 unsigned int default_transform_type = 0;  
 
+vector<string> input_filenames;
+
 @
 @<|extern| declarations for global variables@>=
 
@@ -55,6 +60,8 @@ extern pthread_mutex_t cout_mutex;
 extern pthread_mutex_t log_strm_mutex;
 
 extern unsigned int default_transform_type;
+
+extern vector<string> input_filenames;
 
 @q ** (2) Putting `glblvrbl.web' together.  @>
 

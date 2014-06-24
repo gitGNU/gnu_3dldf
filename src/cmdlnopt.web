@@ -86,6 +86,8 @@ Added this file.
 #include <iostream>
 #include <sstream>   
 
+#include <vector>   
+
 #include <limits>     
 
 #include <pthread.h>   
@@ -120,7 +122,7 @@ process_command_line_options(int argc, char *argv[])
 {
 @q **** (4) @>
 
-   bool DEBUG = true; /* |false| */ 
+   bool DEBUG = false; /* |true| */ 
 
    set_debug_level(DEBUG);
 
@@ -156,7 +158,7 @@ process_command_line_options(int argc, char *argv[])
   const unsigned short HELP_INDEX                 = 1;
   const unsigned short FLOAT_INDEX                = 2;
   const unsigned short DOUBLE_INDEX               = 3;
-  const unsigned short INPUT_FILENAME_INDEX       = 3;
+  const unsigned short INPUT_FILENAME_INDEX       = 4;
 
 @q *** Option struct.@>
 @
@@ -365,6 +367,8 @@ process_command_line_options(int argc, char *argv[])
 
            }  /* |if (DEBUG)|  */
 #endif  /* |DEBUG_COMPILE|  */ 
+
+           input_filenames.push_back(optarg);
 
         }  /* |if (option_index == INPUT_FILENAME_INDEX)|  */
 

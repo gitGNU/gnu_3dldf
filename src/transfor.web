@@ -91,9 +91,14 @@ versions are now in their own RCS repository.
 #include <iostream>
 #include <sstream>   
 
+#include <valarray>   
+#include <vector>   
+
 #include <limits>     
 
 #include <pthread.h>   
+
+
 
 #include "glblcnst.h++"
 #include "glblvrbl.h++"

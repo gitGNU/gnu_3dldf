@@ -82,6 +82,7 @@
 #include <string> 
 #include <limits>     
 #include <valarray>     
+#include <vector>     
 
 #include <pthread.h>   
 
@@ -90,7 +91,10 @@
 #include "utility.h++"
 #include "cmdlnopt.h++"
 #include "transfor.h++"
+#include "shapes.h++"
 #include "points.h++"
+#include "paths.h++"
+#include "solids.h++"
 
 typedef void* yyscan_t;
 
@@ -334,14 +338,39 @@ Added this section.
 @
 @<|main| definition@>=
 
+
+#if 0 
    Point<float> p0;
 
    p0.show("p0:");
 
 
-@q ** (2) @>
+   Path<float> q0;
+
+   q0.show("q0:");
+
+
+
+   Solid<float> s0;
+
+   s0.show("s0");
+
+#endif 
+
+   Point<float> p0;
+
+   p0.show("p0:");
+
+   p0.init_transform();
+
+   p0.show("p0:");
+
+
+@q ** (2) Read input.  @>
 @
 @<|main| definition@>=
+
+#if 0 
 
    yyscan_t parameter;
 
@@ -359,6 +388,31 @@ Added this section.
    YY_BUFFER_STATE yy_buffer_state;
 
 #endif 
+
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+      cerr << "[Thread 0] In `main':  `input_filenames.size()' == " 
+           << input_filenames.size()
+           << endl;
+
+
+      if (input_filenames.size() > 0)
+      {
+          cerr << "`input_filenames':" << endl;
+        
+          int i = 1;
+
+          for (vector<string>::iterator iter = input_filenames.begin();
+               iter != input_filenames.end();
+               ++iter)
+          {
+              cerr << setw(2) << i++ << ".  " << *iter << endl;
+          }
+      }
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */    
 
    int param = 0;
 
@@ -396,6 +450,9 @@ Added this section.
 
    fclose(fp);
    fp = 0;
+
+#endif 
+
 
 @q ** (2) @>
 @

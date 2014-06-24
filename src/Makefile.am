@@ -71,8 +71,8 @@ dummy_SOURCES = dummy.cxx
 
 lib_LTLIBRARIES = lib3dldflb.la 
 
-3dldflb_CWEB_files = cmdlnopt.web glblcnst.web parser.w points.web \
-                     scanner.w transfor.web utility.web
+3dldflb_CWEB_files = cmdlnopt.web glblcnst.web parser.w paths.web points.web \
+                     scanner.w shapes.web solids.web transfor.web utility.web
 
 3dldflb_c_files = $(3dldflb_CWEB_files:.web=.c) parser.c scanner.c
 3dldflb_cpp_files = $(3dldflb_CWEB_files:.web=.c++) parser.c++ scanner.c++
@@ -217,14 +217,28 @@ glblvrbl.o: glblvrbl.c++ glblvrbl.h++ glblcnst.h++
 #### main.web
 
 main.o: main.c++ main.h++ cmdlnopt.h++ glblcnst.h++ glblvrbl.h++ \
-                          parser.h++ points.h++ \
-                          transfor.h++ utility.h++
+                          parser.h++ paths.h++ points.h++ \
+                          shapes.h++ solids.h++ transfor.h++ utility.h++
 
+#### paths.web
+
+paths.o: paths.c++ paths.h++ glblcnst.h++ glblvrbl.h++ points.h++ shapes.h++ \
+                             transfor.h++ utility.h++
 
 #### points.web
 
-points.o: points.c++ points.h++ glblcnst.h++ glblvrbl.h++ transfor.h++ \
-                                utility.h++
+points.o: points.c++ points.h++ glblcnst.h++ glblvrbl.h++ shapes.h++ \
+                                transfor.h++ utility.h++
+
+#### shapes.o
+
+shapes.o: shapes.c++ shapes.h++ glblcnst.h++ glblvrbl.h++ points.h++ \
+                                transfor.h++ utility.h++
+
+#### solids.web
+
+solids.o: solids.c++ solids.h++ glblcnst.h++ glblvrbl.h++ paths.h++ points.h++ \
+                                shapes.h++ transfor.h++ utility.h++
 
 #### transfor.web
 
@@ -295,7 +309,11 @@ purge: clean
               glblvrbl.c glblvrbl.h glblvrbl.c++ glblvrbl.h++ glblvrbl.o \
               parser.c parser.cc parser.cxx parser.c++ parser.h++ parser.y++ \
               parser.output \
+              path.c path.h path.c++ path.h++ path.o \
+              point.c point.h point.c++ point.h++ point.o \
               scanner.c scanner.cc scanner.cxx scanner.l++ \
+              shapes.c shapes.h shapes.c++ shapes.h++ shapes.o \
+              solid.c solid.h solid.c++ solid.h++ solid.o \
               transfor.c transfor.h transfor.c++ transfor.h++ transfor.o \
               utility.c utility.h utility.c++ utility.h++ utility.o \
               main.c main.h main.c++ main.h++ main.o \

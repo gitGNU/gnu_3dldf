@@ -59,10 +59,6 @@
 
 @<Include files@>=
 
-#if HAVE_CONFIG_H
-#include "config.h"
-#endif 
-
 #define _GNU_SOURCE
 
 #include <stdlib.h>
@@ -81,17 +77,21 @@
 #include <sstream>   
 
 #include <valarray>   
-
-
+#include <vector>   
 
 #include <limits>     
 
 #include <pthread.h>   
 
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif 
+
 #include "glblcnst.h++"
 #include "glblvrbl.h++"
 #include "utility.h++"
 #include "transfor.h++"
+#include "shapes.h++"
 
 @q * (1) |class Point|.  @>
 
@@ -100,7 +100,8 @@
 
 @<Declare |class Point|@>=
 
-template <class C, unsigned int T = 0> class Point
+template <class C, unsigned int T = 0> 
+class Point 
 {
 
    int type;
@@ -108,8 +109,6 @@ template <class C, unsigned int T = 0> class Point
 
    valarray<C> world_coordinates;
    valarray<C> projective_coordinates;
-
-   Transform<C, T> transform;
 
    public:
 
@@ -195,7 +194,6 @@ Point<C,T>::Point(void)
 @
 @<|Point| constructor definitions@>=
 
-
    world_coordinates.resize(4, static_cast<C>(0));
    projective_coordinates.resize(4, static_cast<C>(0));
 
@@ -223,6 +221,116 @@ Point<C,T>::Point(void)
 
 @q **** (4) @>
 
+
+@q **** (4) Destructor.  @>
+@ Destructor.
+\initials{LDF 2014.06.24.}
+
+\LOG
+\initials{LDF 2014.06.24.}
+Added this function.
+\ENDLOG
+
+@q ***** (5) Declaration  @>
+
+@<Declare |Point| functions@>=
+
+~Point(void);
+
+@q ***** (5) Definition  @>
+@
+@<|Point| destructor definition@>=
+
+template <class C, unsigned int T>
+Point<C,T>::~Point(void)
+{
+
+   if (transform != 0)
+   {
+      delete transform;
+      transform = 0;
+   }
+
+   return;
+
+}  /* End of |Point| destructor definition  */
+
+@q *** (3) Initialize |transform| (|init_transform|).  @>
+@ Initialize |transform| (|init_transform|).
+\initials{LDF 2014.06.24.}
+
+\LOG
+\initials{LDF 2014.06.24.}
+Added this function.
+\ENDLOG
+
+@q **** (4) Declaration @>
+
+@<Declare |Point| functions@>=
+
+int
+init_transform(void);
+
+@q **** (4) Definition  @>
+@
+@<|Point::init_transform| definition@>=
+template <class C, unsigned int T>
+int
+Point<C,T>::init_transform(void)
+{
+@q ***** (5) @>
+
+   bool DEBUG = true;  /* |false|  */
+   set_debug_level(DEBUG, 0, 0); 
+
+   try
+   {
+      transform = new Transform<C, T>;
+   }
+   catch (...)
+   {
+
+      lock_cerr_mutex(); 
+      cerr << "ERROR!  In `init_transform':"
+           << endl 
+           << "`new' failed, throwing an exception."
+           << endl
+           << "Failed to allocate new `Transform'." 
+           << endl
+           << "Exiting `Transform::init_transform' unsuccessfully "
+           << "with return value 1."
+           << endl;
+      unlock_cerr_mutex(); 
+
+      return 1;
+
+   }
+
+@q ***** (5) @>
+
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+       lock_cerr_mutex(); 
+       cerr << "In `init_transform':"
+            << endl 
+            << "`new' succeeded."
+            << endl
+            << "Allocated new `Transform' successfully." 
+            << endl
+            << "Exiting function successfully with return value 0."
+            << endl;
+       unlock_cerr_mutex(); 
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+   return 0;
+
+@q ***** (5) @>
+
+}  /* End of |init_transform| definition  */
+
 @q *** (3) Show (|show|).  @>
 @ Show (|show|).
 \initials{LDF 2014.06.15.}
@@ -245,7 +353,7 @@ show(string s = "Point:");
 
 template <class C, unsigned int T>
 int
-Point<C,T>::show(string s)
+Point<C, T>::show(string s)
 {
 @q ***** (5) @>
 
@@ -306,10 +414,12 @@ Point<C,T>::show(string s)
 @
 @<|Point::show| definition@>=
 
-   cerr << "transform:"
-        << endl;
-
-   transform.show("transform:");
+   if (transform == static_cast<Transform<C, T>*>(0))
+      cerr << "transform:  NULL" << endl;
+   else 
+   {
+      static_cast<Transform<C, T>*>(transform)->show("transform:");
+   }
 
 @q ***** (5) @>
 @
@@ -344,6 +454,8 @@ Point<C,T>::show(string s)
 @<Include files@>@;
 @<Declare |class Point|@>@;
 @<|Point| constructor definitions@>@;@/
+@<|Point| destructor definition@>@;@/
+@<|Point::init_transform| definition@>@;@/
 @<|Point::show| definition@>@;@/
 
 @q **  This is what's written to \filename{points.h}. @>
@@ -354,6 +466,8 @@ Point<C,T>::show(string s)
 
 @<Declare |class Point|@>@;
 @<|Point| constructor definitions@>@;@/
+@<|Point| destructor definition@>@;@/
+@<|Point::init_transform| definition@>@;@/
 @<|Point::show| definition@>@;@/
  
 
