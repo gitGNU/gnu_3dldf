@@ -101,7 +101,7 @@
 @<Declare |class Point|@>=
 
 template <class C, unsigned int T = 0> 
-class Point 
+class Point : public Shape<C, T>
 {
 
    int type;
@@ -194,6 +194,8 @@ Point<C,T>::Point(void)
 @
 @<|Point| constructor definitions@>=
 
+   Shape<C, T>::transform = 0;
+
    world_coordinates.resize(4, static_cast<C>(0));
    projective_coordinates.resize(4, static_cast<C>(0));
 
@@ -245,10 +247,10 @@ template <class C, unsigned int T>
 Point<C,T>::~Point(void)
 {
 
-   if (transform != 0)
+   if (static_cast<Transform<C, T>*>(Shape<C, T>::transform) != 0)
    {
-      delete transform;
-      transform = 0;
+      delete static_cast<Transform<C, T>*>(Shape<C, T>::transform);
+      Shape<C, T>::transform = 0;
    }
 
    return;
@@ -285,7 +287,7 @@ Point<C,T>::init_transform(void)
 
    try
    {
-      transform = new Transform<C, T>;
+      Shape<C, T>::transform = new Transform<C, T>;
    }
    catch (...)
    {
@@ -414,11 +416,11 @@ Point<C, T>::show(string s)
 @
 @<|Point::show| definition@>=
 
-   if (transform == static_cast<Transform<C, T>*>(0))
+   if (Shape<C, T>::transform == static_cast<Transform<C, T>*>(0))
       cerr << "transform:  NULL" << endl;
    else 
    {
-      static_cast<Transform<C, T>*>(transform)->show("transform:");
+      Shape<C, T>::transform->show("transform:");
    }
 
 @q ***** (5) @>

@@ -357,14 +357,14 @@ Added this section.
 
 #endif 
 
-   Point<float> p0;
+   Point<float, 0> p0;
 
    p0.show("p0:");
+
 
    p0.init_transform();
 
    p0.show("p0:");
-
 
 @q ** (2) Read input.  @>
 @

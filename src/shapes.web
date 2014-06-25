@@ -108,7 +108,6 @@ class Shape
 
    Transform<C, T> *transform;
 
-
    @<Declare |Shape| functions@>@;@/
 
 };

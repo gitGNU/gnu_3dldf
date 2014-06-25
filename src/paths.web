@@ -96,7 +96,6 @@
 #include "shapes.h++"
 #include "points.h++"
 
-
 @q * (1) class Path definition.@>
 @* {\bf Path} class definition.
 
