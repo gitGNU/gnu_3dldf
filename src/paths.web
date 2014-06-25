@@ -127,24 +127,96 @@ class Path : public Shape<C, T>
 
 @<Declare |Path| functions@>=
 
-Path(void);
+Path(bool allocate_transform = true);
 
 @q **** (4) Definition  @>
 @
 @<|Path| constructor definitions@>=
 
 template <class C, unsigned int T>
-Path<C,T>::Path(void)
+Path<C,T>::Path(bool allocate_transform)
 {
+@q ***** (5) @>
+
+   bool DEBUG = true;  /* |false|  */
+   set_debug_level(DEBUG, 0, 0); 
+
+   int status = 0;
 
    radius      = static_cast<C>(0);
    side_length = static_cast<C>(0);;
    side_ctr    = 0U;
 
-   /* !! START HERE:  LDF 2014.06.24.  Make |init_transform| a member
-      of |Shape| and derive |Path| from |Shape|.  */
+@q ***** (5) @>
 
-   transform   = 0;
+   if (allocate_transform)
+   {
+@q ****** (6) @>
+
+#if DEBUG_COMPILE
+       if (DEBUG)
+       {
+           lock_cerr_mutex(); 
+           cerr << "In `Path' default constructor:"
+                << endl
+                << "`allocate_transform' == `true'."
+                << endl 
+                << "Calling `Shape::init_transform'."
+                << endl;
+           unlock_cerr_mutex(); 
+
+       }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */     
+
+@q ****** (6) @>
+
+       status = Shape<C, T>::init_transform();
+
+       if (status != 0)
+       {
+          lock_cerr_mutex(); 
+          cerr << "ERROR!  In `Path' default constructor:"
+               << endl
+               << "`Shape::init_transform' failed, returning " 
+               << status << ":"
+               << endl
+               << "Failed to initialize `Shape::transform'."
+               << endl
+               << "Throwing `bad_alloc' exception."
+               << endl;
+
+          unlock_cerr_mutex(); 
+
+          throw bad_alloc();
+
+@q ****** (6) @>
+
+       }
+
+@q ***** (5) @>
+
+#if DEBUG_COMPILE
+       else if (DEBUG)
+       {
+          lock_cerr_mutex(); 
+          cerr << "In `Path' default constructor:"
+               << endl
+               << "`Shape::init_transform' succeeded, returning 0."
+               << endl
+               << "Initialized `Shape::transform' successfully."
+               << endl;
+
+          unlock_cerr_mutex(); 
+
+       }  /* |else if (DEBUG)|  */
+
+#endif  /* |DEBUG_COMPILE|  */ 
+
+   }  /* |if (allocate_transform)|  */
+
+
+@q ***** (5) @>
+
 
    return;
 
@@ -172,12 +244,6 @@ Added this function.
 template <class C, unsigned int T>
 Path<C,T>::~Path(void)
 {
-
-   if (transform != 0)
-   {
-      delete transform;
-      transform = 0;
-   }
 
    return;
 
@@ -207,9 +273,19 @@ void
 Path<C,T>::show(string s)
 {
 
+   bool DEBUG = false;  /* |true|  */
+   set_debug_level(DEBUG, 0, 0); 
+
    lock_cerr_mutex(); 
 
    cerr << s << endl;
+
+   if (Shape<C, T>::transform == static_cast<Transform<C, T>*>(0))
+      cerr << "transform:  NULL" << endl;
+   else 
+   {
+      Shape<C, T>::transform->show("transform:");
+   }
 
    center.show("center:");
 
@@ -260,6 +336,7 @@ Path<C,T>::show(string s)
 @<Include files@>@;
 @<Declare |class Path|@>@;
 @<|Path| constructor definitions@>@;@/
+@<|Path| destructor definition@>@;@/
 @<|Path::show| definition@>@;@/
 
 @q ** (2).@> 
@@ -270,6 +347,7 @@ Path<C,T>::show(string s)
 @(paths.h@>=
 @<Declare |class Path|@>@;
 @<|Path| constructor definitions@>@;@/
+@<|Path| destructor definition@>@;@/
 @<|Path::show| definition@>@;@/
 
 

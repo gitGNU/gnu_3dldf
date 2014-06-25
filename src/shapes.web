@@ -112,8 +112,135 @@ class Shape
 
 };
 
-@
+@q ** (2) |Shape| functions.  @>
+@ |Shape| functions.
+\initials{LDF 2014.06.25.}
+
+@q *** (2) Constructors.  @>
+@ Constructors.
+\initials{LDF 2014.06.25.}
+
+@q *** (3) Default constructor.  @>
+@ Default constructor.  
+\initials{LDF 2014.06.25.}
+
+@q **** (4) Declaration  @>
+
 @<Declare |Shape| functions@>=
+Shape(void);
+
+@q **** (4) Definition  @>
+@
+@<|Shape| constructor definitions@>=
+
+template <class C, unsigned int T> 
+Shape<C, T>::Shape(void)
+{
+    transform = 0;
+    return;
+}
+
+
+@q ** (2) Destructor.  @>
+@ Destructor.  
+\initials{LDF 2014.06.25.}
+
+@q **** (4) Declaration  @>
+
+@<Declare |Shape| functions@>=
+~Shape(void);
+
+@q **** (4) Definition  @>
+@
+@<|Shape| destructor definition@>=
+
+template <class C, unsigned int T> 
+Shape<C, T>::~Shape(void)
+{
+
+    delete transform;
+    transform = 0;
+
+    return;
+}
+
+
+
+@q *** (3) Initialize |transform| (|init_transform|).  @>
+@ Initialize |transform| (|init_transform|).
+\initials{LDF 2014.06.24.}
+
+\LOG
+\initials{LDF 2014.06.24.}
+Added this function.
+\ENDLOG
+
+@q **** (4) Declaration @>
+
+@<Declare |Shape| functions@>=
+
+int
+init_transform(void);
+
+@q **** (4) Definition  @>
+@
+@<|Shape::init_transform| definition@>=
+template <class C, unsigned int T>
+int
+Shape<C,T>::init_transform(void)
+{
+@q ***** (5) @>
+
+   bool DEBUG = true;  /* |false|  */
+   set_debug_level(DEBUG, 0, 0); 
+
+   try
+   {
+      transform = new Transform<C, T>;
+   }
+   catch (...)
+   {
+
+      lock_cerr_mutex(); 
+      cerr << "ERROR!  In `Shape::init_transform':"
+           << endl 
+           << "`new' failed, throwing an exception."
+           << endl
+           << "Failed to allocate new `Transform'." 
+           << endl
+           << "Exiting `Shape::init_transform' unsuccessfully "
+           << "with return value 1."
+           << endl;
+      unlock_cerr_mutex(); 
+
+      return 1;
+
+   }
+
+@q ***** (5) @>
+
+#if DEBUG_COMPILE
+   if (DEBUG)
+   {
+       lock_cerr_mutex(); 
+       cerr << "In `Shape::init_transform':"
+            << endl 
+            << "`new' succeeded."
+            << endl
+            << "Allocated new `Transform' successfully." 
+            << endl
+            << "Exiting function successfully with return value 0."
+            << endl;
+       unlock_cerr_mutex(); 
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */ 
+
+   return 0;
+
+@q ***** (5) @>
+
+}  /* End of |init_transform| definition  */
 
 
 @q * (1) Putting {\bf Shape} together. @>                   
@@ -123,12 +250,17 @@ class Shape
 @c
 @<Include files@>@;
 @<Declare |class Shape|@>@;
+@<|Shape| constructor definitions@>@;@/
+@<|Shape| destructor definition@>@;@/
+@<|Shape::init_transform| definition@>@;@/
 
 @
 @ This is what's written to \filename{shapes.h}.
 @(shapes.h@>=
 @<Declare |class Shape|@>@;
-
+@<|Shape| constructor definitions@>@;@/
+@<|Shape| destructor definition@>@;@/
+@<|Shape::init_transform| definition@>@;@/
 
 
 @q Local Variables: @>

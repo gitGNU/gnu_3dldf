@@ -344,7 +344,6 @@ Added this section.
 
    p0.show("p0:");
 
-
    Path<float> q0;
 
    q0.show("q0:");
@@ -361,10 +360,39 @@ Added this section.
 
    p0.show("p0:");
 
+fprintf(stderr, "Type <RETURN> to continue");
+getchar(); 
 
    p0.init_transform();
 
    p0.show("p0:");
+
+fprintf(stderr, "Type <RETURN> to continue");
+getchar(); 
+
+   Point<float, 0> p1(true);
+
+   p1.show("p1:");
+
+fprintf(stderr, "Type <RETURN> to continue");
+getchar(); 
+
+
+   Path<float> q0;
+
+   q0.show("q0:");
+
+fprintf(stderr, "Type <RETURN> to continue");
+getchar(); 
+
+
+   Solid<float> s0;
+
+   s0.show("s0");
+
+fprintf(stderr, "Type <RETURN> to continue");
+getchar(); 
+
 
 @q ** (2) Read input.  @>
 @

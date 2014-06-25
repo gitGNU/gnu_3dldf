@@ -80,6 +80,7 @@
 #include <vector>   
 
 #include <limits>     
+#include <exception>     
 
 #include <pthread.h>   
 
@@ -148,19 +149,21 @@ Added this function.
 
 @<Declare |Point| functions@>=
 
-Point(void);
+Point(bool allocate_transform = false);
 
 @q ***** (5) Definition  @>
 @
 @<|Point| constructor definitions@>=
 
 template <class C, unsigned int T>
-Point<C,T>::Point(void)
+Point<C,T>::Point(bool allocate_transform)
 {
 @q ****** (6) @>
 
-    bool DEBUG = false;  /* |true|  */
+    bool DEBUG = true;  /* |false|  */
     set_debug_level(DEBUG, 0, 0); 
+
+    int status = 0;
 
 #if DEBUG_COMPILE
    if (DEBUG)
@@ -194,10 +197,91 @@ Point<C,T>::Point(void)
 @
 @<|Point| constructor definitions@>=
 
-   Shape<C, T>::transform = 0;
-
    world_coordinates.resize(4, static_cast<C>(0));
    projective_coordinates.resize(4, static_cast<C>(0));
+
+@q ****** (6) @>
+
+   if (allocate_transform)
+   {
+@q ******* (7) @>
+
+#if DEBUG_COMPILE
+       if (DEBUG)
+       {
+           lock_cerr_mutex(); 
+           cerr << "In `Point' default constructor:"
+                << endl
+                << "`allocate_transform' == `true'."
+                << endl 
+                << "Calling `Shape::init_transform'."
+                << endl;
+           unlock_cerr_mutex(); 
+
+       }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */     
+
+       status = Shape<C, T>::init_transform();
+
+       if (status != 0)
+       {
+          lock_cerr_mutex(); 
+          cerr << "ERROR!  In `Point' default constructor:"
+               << endl
+               << "`Shape::init_transform' failed, returning " 
+               << status << ":"
+               << endl
+               << "Failed to initialize `Shape::transform'."
+               << endl
+               << "Throwing `bad_alloc' exception."
+               << endl;
+
+          unlock_cerr_mutex(); 
+
+          throw bad_alloc();
+
+       }
+
+@q ******* (7) @>
+
+#if DEBUG_COMPILE
+       else if (DEBUG)
+       {
+          lock_cerr_mutex(); 
+          cerr << "In `Point' default constructor:"
+               << endl
+               << "`Shape::init_transform' succeeded, returning 0."
+               << endl
+               << "Initialized `Shape::transform' successfully."
+               << endl;
+
+          unlock_cerr_mutex(); 
+
+       }  /* |else if (DEBUG)|  */
+
+#endif  /* |DEBUG_COMPILE|  */ 
+
+@q ******* (7) @>
+
+   }  /* |if (allocate_transform)|  */
+
+
+@q ****** (6) @>
+
+#if DEBUG_COMPILE
+   else if (DEBUG)
+   {
+       lock_cerr_mutex(); 
+       cerr << "In `Point' default constructor:"
+            << endl
+            << "`allocate_transform' == `false'."
+            << endl 
+            << "Not calling `Shape::init_transform'."
+            << endl;
+       unlock_cerr_mutex(); 
+
+   }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */     
 
 @q ****** (6) @>
 @
@@ -247,91 +331,9 @@ template <class C, unsigned int T>
 Point<C,T>::~Point(void)
 {
 
-   if (static_cast<Transform<C, T>*>(Shape<C, T>::transform) != 0)
-   {
-      delete static_cast<Transform<C, T>*>(Shape<C, T>::transform);
-      Shape<C, T>::transform = 0;
-   }
-
    return;
 
 }  /* End of |Point| destructor definition  */
-
-@q *** (3) Initialize |transform| (|init_transform|).  @>
-@ Initialize |transform| (|init_transform|).
-\initials{LDF 2014.06.24.}
-
-\LOG
-\initials{LDF 2014.06.24.}
-Added this function.
-\ENDLOG
-
-@q **** (4) Declaration @>
-
-@<Declare |Point| functions@>=
-
-int
-init_transform(void);
-
-@q **** (4) Definition  @>
-@
-@<|Point::init_transform| definition@>=
-template <class C, unsigned int T>
-int
-Point<C,T>::init_transform(void)
-{
-@q ***** (5) @>
-
-   bool DEBUG = true;  /* |false|  */
-   set_debug_level(DEBUG, 0, 0); 
-
-   try
-   {
-      Shape<C, T>::transform = new Transform<C, T>;
-   }
-   catch (...)
-   {
-
-      lock_cerr_mutex(); 
-      cerr << "ERROR!  In `init_transform':"
-           << endl 
-           << "`new' failed, throwing an exception."
-           << endl
-           << "Failed to allocate new `Transform'." 
-           << endl
-           << "Exiting `Transform::init_transform' unsuccessfully "
-           << "with return value 1."
-           << endl;
-      unlock_cerr_mutex(); 
-
-      return 1;
-
-   }
-
-@q ***** (5) @>
-
-#if DEBUG_COMPILE
-   if (DEBUG)
-   {
-       lock_cerr_mutex(); 
-       cerr << "In `init_transform':"
-            << endl 
-            << "`new' succeeded."
-            << endl
-            << "Allocated new `Transform' successfully." 
-            << endl
-            << "Exiting function successfully with return value 0."
-            << endl;
-       unlock_cerr_mutex(); 
-
-   }  /* |if (DEBUG)|  */
-#endif  /* |DEBUG_COMPILE|  */ 
-
-   return 0;
-
-@q ***** (5) @>
-
-}  /* End of |init_transform| definition  */
 
 @q *** (3) Show (|show|).  @>
 @ Show (|show|).
@@ -359,7 +361,7 @@ Point<C, T>::show(string s)
 {
 @q ***** (5) @>
 
-    bool DEBUG = true;  /* |false|  */
+    bool DEBUG = false;  /* |true|  */
     set_debug_level(DEBUG, 0, 0); 
 
 #if DEBUG_COMPILE
@@ -457,7 +459,6 @@ Point<C, T>::show(string s)
 @<Declare |class Point|@>@;
 @<|Point| constructor definitions@>@;@/
 @<|Point| destructor definition@>@;@/
-@<|Point::init_transform| definition@>@;@/
 @<|Point::show| definition@>@;@/
 
 @q **  This is what's written to \filename{points.h}. @>
@@ -469,7 +470,6 @@ Point<C, T>::show(string s)
 @<Declare |class Point|@>@;
 @<|Point| constructor definitions@>@;@/
 @<|Point| destructor definition@>@;@/
-@<|Point::init_transform| definition@>@;@/
 @<|Point::show| definition@>@;@/
  
 

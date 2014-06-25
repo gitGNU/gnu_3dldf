@@ -121,15 +121,91 @@ class Solid : public Shape<C, T>
 
 @<Declare |Solid| functions@>=
 
-Solid(void);
+Solid(bool allocate_transform = true);
 
 @q **** (4) Definition  @>
 @
 @<|Solid| constructor definitions@>=
 
 template <class C, unsigned int T>
-Solid<C,T>::Solid(void)
+Solid<C,T>::Solid(bool allocate_transform)
 {
+
+@q ***** (5) @>
+
+   bool DEBUG = true;  /* |false|  */
+   set_debug_level(DEBUG, 0, 0); 
+
+   int status = 0;
+
+@q ***** (5) @>
+
+   if (allocate_transform)
+   {
+@q ****** (6) @>
+
+#if DEBUG_COMPILE
+       if (DEBUG)
+       {
+           lock_cerr_mutex(); 
+           cerr << "In `Path' default constructor:"
+                << endl
+                << "`allocate_transform' == `true'."
+                << endl 
+                << "Calling `Shape::init_transform'."
+                << endl;
+           unlock_cerr_mutex(); 
+
+       }  /* |if (DEBUG)|  */
+#endif  /* |DEBUG_COMPILE|  */     
+
+@q ****** (6) @>
+
+       status = Shape<C, T>::init_transform();
+
+       if (status != 0)
+       {
+          lock_cerr_mutex(); 
+          cerr << "ERROR!  In `Path' default constructor:"
+               << endl
+               << "`Shape::init_transform' failed, returning " 
+               << status << ":"
+               << endl
+               << "Failed to initialize `Shape::transform'."
+               << endl
+               << "Throwing `bad_alloc' exception."
+               << endl;
+
+          unlock_cerr_mutex(); 
+
+          throw bad_alloc();
+
+@q ****** (6) @>
+
+       }
+
+@q ***** (5) @>
+
+#if DEBUG_COMPILE
+       else if (DEBUG)
+       {
+          lock_cerr_mutex(); 
+          cerr << "In `Path' default constructor:"
+               << endl
+               << "`Shape::init_transform' succeeded, returning 0."
+               << endl
+               << "Initialized `Shape::transform' successfully."
+               << endl;
+
+          unlock_cerr_mutex(); 
+
+       }  /* |else if (DEBUG)|  */
+
+#endif  /* |DEBUG_COMPILE|  */ 
+
+   }  /* |if (allocate_transform)|  */
+
+@q ***** (5) @>
 
    return;
 
@@ -161,6 +237,13 @@ Solid<C,T>::show(string s)
 {
 
    lock_cerr_mutex(); 
+
+   if (Shape<C, T>::transform == static_cast<Transform<C, T>*>(0))
+      cerr << "transform:  NULL" << endl;
+   else 
+   {
+      Shape<C, T>::transform->show("transform:");
+   }
 
    cerr << s << endl
         << "path_vector.size():  " << path_vector.size()
